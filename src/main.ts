@@ -6,7 +6,7 @@
 import { NestFactory } from '@nestjs/core';
 import { RootModule } from '@/module';
 import { requestHandle } from '@/middleware';
-import { ResponseHandle } from '@/interceptor';
+import { ResponseHandle/*, TestInterceptor*/ } from '@/interceptor';
 import { ErrorHandle } from '@/filter';
 // import { JWTCheckHandle } from '@/guard';
 // import { ValidationPipe } from '@/pipe';
@@ -23,7 +23,7 @@ async function bootstrap() {
 	app.use(requestHandle);
 	// app.useGlobalGuards(new JWTCheckHandle());
 	// app.useGlobalPipes(new ValidationPipe());
-	app.useGlobalInterceptors(new ResponseHandle());
+	app.useGlobalInterceptors(new ResponseHandle()/*, new TestInterceptor()*/);
 	await app.listen(3003);
 }
 bootstrap();

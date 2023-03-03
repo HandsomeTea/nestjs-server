@@ -1,4 +1,4 @@
-// 后置拦截器
+// 后置拦截器，在请求结束前执行
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 
 import { Observable } from 'rxjs';
