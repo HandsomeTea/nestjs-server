@@ -12,7 +12,6 @@ export class UserController {
 	@Get('/test')
 	// getHello(@Query(new ValidationPipe) a: string): string { // 管道注册
 	getHello(): string {
-		// getHello(): string {
 		return this.userService.getHello();
 	}
 }
