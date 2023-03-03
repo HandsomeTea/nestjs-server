@@ -1,4 +1,4 @@
-// 前置拦截器，在管道之前执行，不常用
+// 前置拦截器，在管道之前执行
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
 import { Observable } from 'rxjs';
 
