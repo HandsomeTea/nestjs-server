@@ -2,7 +2,4 @@
 import ResponseHandle from './send';
 import TestInterceptor from './test';
 
-export {
-	ResponseHandle,
-	TestInterceptor
-};
+export { ResponseHandle, TestInterceptor };

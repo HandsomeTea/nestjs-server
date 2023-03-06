@@ -6,7 +6,7 @@ import { UserService } from '@/service';
 // @UseInterceptors(TestInterceptor)
 @Controller()
 export class UserController {
-	constructor(private readonly userService: UserService) { }
+	constructor(private readonly userService: UserService) {}
 
 	// @UseInterceptors(TestInterceptor)
 	@Get('/test')

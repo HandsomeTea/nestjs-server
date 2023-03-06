@@ -1,4 +1,3 @@
-
 export const HttpErrorType = {
 	BE_LOGOUT: 401,
 	INVALID_DATA_RATE: 401
