@@ -13,9 +13,7 @@ import { ErrorHandle } from '@/filter';
 // import { ValidationPipe } from '@/pipe';
 
 async function bootstrap() {
-	const app = await NestFactory.create(RootModule, {
-		logger: false
-	});
+	const app = await NestFactory.create(RootModule);
 
 	/**
 	 * ------------------------------------异常过滤器------------------------------------
