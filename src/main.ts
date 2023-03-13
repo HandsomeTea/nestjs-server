@@ -16,6 +16,8 @@ import { updateOrCreateLogInstance, system } from './configs';
 // import { ValidationPipe } from '@/pipe';
 
 (async () => {
+	updateOrCreateLogInstance(); // 日志初始化
+
 	const app = await NestFactory.create(V1AppModule, {
 		logger: system('startup')
 	});
@@ -25,6 +27,7 @@ import { updateOrCreateLogInstance, system } from './configs';
 	 * ---发起请求---中间件---守卫---拦截器---管道---controller---service--拦截器---请求结束---
 	 */
 
+	app.enableCors();
 	app.setGlobalPrefix('api/v1');
 
 	/** 全局错误捕获 */
@@ -46,8 +49,6 @@ import { updateOrCreateLogInstance, system } from './configs';
 
 	/** 后置拦截器 */
 	app.useGlobalInterceptors(new ResponseHandle() /*, new TestInterceptor()*/);
-
-	updateOrCreateLogInstance(); // 日志初始化
 
 	await app.listen(process.env.PORT, async () => {
 		system('startup').debug(`nest server is running at ${await app.getUrl()}`);
