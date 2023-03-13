@@ -1,5 +1,4 @@
 import * as log4js from 'log4js';
-import getENV from './env';
 
 /**
  * 定义日志配置
@@ -55,17 +54,17 @@ const updateOrCreateLogInstance = (): void => {
 			},
 			developLog: {
 				appenders: ['_develop'],
-				level: getENV('DEV_LOG_LEVEL') || getENV('LOG_LEVEL') || 'OFF',
+				level: process.env.DEV_LOG_LEVEL || process.env.LOG_LEVEL || 'OFF',
 				enableCallStack: true
 			},
 			traceLog: {
 				appenders: ['_trace'],
-				level: getENV('TRACE_LOG_LEVEL') || getENV('LOG_LEVEL') || 'ALL',
+				level: process.env.TRACE_LOG_LEVEL || process.env.LOG_LEVEL || 'ALL',
 				enableCallStack: true
 			},
 			auditLog: {
 				appenders: ['_audit'],
-				level: getENV('AUDIT_LOG_LEVEL') || getENV('LOG_LEVEL') || 'ALL',
+				level: process.env.AUDIT_LOG_LEVEL || process.env.LOG_LEVEL || 'ALL',
 				enableCallStack: true
 			},
 			systemLog: {
@@ -94,7 +93,7 @@ export const log = (module?: string): log4js.Logger => {
 export const trace = (data: { traceId: string; spanId: string; parentSpanId?: string }, module?: string): log4js.Logger => {
 	const _traceLogger = log4js.getLogger('traceLog');
 
-	_traceLogger.addContext('Module', (module || getENV('SERVER_NAME') || 'default-module').toUpperCase());
+	_traceLogger.addContext('Module', (module || process.env.SERVER_NAME || 'default-module').toUpperCase());
 	_traceLogger.addContext('TraceId', data.traceId);
 	_traceLogger.addContext('SpanId', data.spanId);
 	_traceLogger.addContext('ParentSpanId', data.parentSpanId || '');
