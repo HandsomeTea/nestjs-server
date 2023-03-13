@@ -1,4 +1,4 @@
-import { Exception } from '@/config';
+import { Exception } from '@/configs';
 import jwt from 'jsonwebtoken';
 import { HttpStatus } from '@nestjs/common';
 

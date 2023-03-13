@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { HttpError, Exception, log } from '@/config';
+import { /*HttpError, Exception,*/ log } from '@/configs';
 
 @Injectable()
 export class UserService {
@@ -33,8 +33,8 @@ export class UserService {
 	getHello(): string {
 		// return this.configService.get('NODE_ENV');
 		// return process.env.PORT;
-		throw new Exception('cuo le', HttpError.BE_LOGOUT);
+		// throw new Exception('cuo le', HttpError.BE_LOGOUT);
 		// throw new Exception('cuo le', HttpStatus.BAD_GATEWAY, ['213123221']);
-		// return 'Hello World!';
+		return 'Hello World!';
 	}
 }

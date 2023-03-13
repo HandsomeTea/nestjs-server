@@ -7,10 +7,11 @@ import { NestFactory } from '@nestjs/core';
 import * as httpContext from 'express-http-context';
 import * as compression from 'compression';
 
-import { V1AppModule } from '@/module';
-import { requestHandle } from '@/middleware';
-import { ResponseHandle /*, TestInterceptor*/ } from '@/interceptor';
-import { ErrorHandle } from '@/filter';
+import { V1AppModule } from '@/modules';
+import { requestHandle } from '@/middlewares';
+import { ResponseHandle /*, TestInterceptor*/ } from '@/interceptors';
+import { ErrorHandle } from '@/filters';
+import { updateOrCreateLogInstance } from './configs';
 // import { JWTCheckHandle } from '@/guard';
 // import { ValidationPipe } from '@/pipe';
 
@@ -30,5 +31,6 @@ import { ErrorHandle } from '@/filter';
 	// app.useGlobalPipes(new ValidationPipe());
 	app.useGlobalInterceptors(new ResponseHandle() /*, new TestInterceptor()*/);
 	app.setGlobalPrefix('api/v1');
+	updateOrCreateLogInstance();
 	await app.listen(3003);
 })();

@@ -1,7 +1,7 @@
 import { ExceptionFilter, Catch, ArgumentsHost, HttpException } from '@nestjs/common';
 import { Response, Request } from 'express';
 import * as httpContext from 'express-http-context';
-import { Exception, trace } from '@/config';
+import { Exception, trace } from '@/configs';
 
 // 只能catch到HttpException类型的throw
 @Catch(HttpException)

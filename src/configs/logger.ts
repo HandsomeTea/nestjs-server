@@ -3,7 +3,7 @@ import * as log4js from 'log4js';
 /**
  * 定义日志配置
  */
-const updateOrCreateLogInstance = (): void => {
+export const updateOrCreateLogInstance = (): void => {
 	log4js.configure({
 		disableClustering: true, //支持nodejs集群启动模式
 		appenders: {
@@ -75,7 +75,6 @@ const updateOrCreateLogInstance = (): void => {
 	});
 };
 
-updateOrCreateLogInstance();
 /**
  * 开发时打印日志使用
  */
