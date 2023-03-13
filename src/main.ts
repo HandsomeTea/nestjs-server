@@ -11,12 +11,14 @@ import { V1AppModule } from '@/modules';
 import { requestHandle } from '@/middlewares';
 import { ResponseHandle /*, TestInterceptor*/ } from '@/interceptors';
 import { ErrorHandle } from '@/filters';
-import { updateOrCreateLogInstance } from './configs';
+import { updateOrCreateLogInstance, system } from './configs';
 // import { JWTCheckHandle } from '@/guard';
 // import { ValidationPipe } from '@/pipe';
 
 (async () => {
-	const app = await NestFactory.create(V1AppModule);
+	const app = await NestFactory.create(V1AppModule, {
+		logger: system('nestjs')
+	});
 
 	/**
 	 * ------------------------------------异常过滤器------------------------------------
