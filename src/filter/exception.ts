@@ -14,7 +14,7 @@ export default class HttpExceptionFilter implements ExceptionFilter {
 		const result = {
 			message: exception.message,
 			code: exception.code,
-			reason: exception.reason || [],
+			reason: exception.reason || {},
 			source: exception.source
 		};
 

@@ -5,15 +5,15 @@
  */
 import { NestFactory } from '@nestjs/core';
 import * as httpContext from 'express-http-context';
-import { RootModule } from '@/module';
+import { V1AppModule } from '@/module';
 import { requestHandle } from '@/middleware';
 import { ResponseHandle /*, TestInterceptor*/ } from '@/interceptor';
 import { ErrorHandle } from '@/filter';
 // import { JWTCheckHandle } from '@/guard';
 // import { ValidationPipe } from '@/pipe';
 
-async function bootstrap() {
-	const app = await NestFactory.create(RootModule);
+(async () => {
+	const app = await NestFactory.create(V1AppModule);
 
 	/**
 	 * ------------------------------------异常过滤器------------------------------------
@@ -26,6 +26,6 @@ async function bootstrap() {
 	// app.useGlobalGuards(new JWTCheckHandle());
 	// app.useGlobalPipes(new ValidationPipe());
 	app.useGlobalInterceptors(new ResponseHandle() /*, new TestInterceptor()*/);
+	app.setGlobalPrefix('api/v1');
 	await app.listen(3003);
-}
-bootstrap();
+})();

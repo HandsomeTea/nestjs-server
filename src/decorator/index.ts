@@ -1,6 +1,7 @@
-// 自定义修饰器，用于获取req上的通用数据
+// 自定义修饰器
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
+// 自定义用于获取req上的通用用户数据的修饰器
 export const User = createParamDecorator((data: unknown, ctx: ExecutionContext) => {
 	const request = ctx.switchToHttp().getRequest();
 

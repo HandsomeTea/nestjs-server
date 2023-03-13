@@ -2,7 +2,7 @@ import { getENV, Exception } from '@/config';
 import jwt from 'jsonwebtoken';
 import { HttpStatus } from '@nestjs/common';
 
-export default new class JWT {
+export default new (class JWT {
 	app: string;
 	appId: string;
 	appSecert: string;
@@ -50,4 +50,4 @@ export default new class JWT {
 			throw new Exception('invalid JWT string!', HttpStatus.UNAUTHORIZED);
 		}
 	}
-}();
+})();
