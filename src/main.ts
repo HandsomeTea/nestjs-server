@@ -6,7 +6,7 @@
 import { NestFactory } from '@nestjs/core';
 import * as httpContext from 'express-http-context';
 import * as compression from 'compression';
-
+import * as csurf from 'csurf';
 import { V1AppModule } from '@/modules';
 import { requestHandle } from '@/middlewares';
 import { ResponseHandle /*, TestInterceptor*/ } from '@/interceptors';
@@ -17,7 +17,7 @@ import { updateOrCreateLogInstance, system } from './configs';
 
 (async () => {
 	const app = await NestFactory.create(V1AppModule, {
-		logger: system('nestjs')
+		logger: system('startup')
 	});
 
 	/**
@@ -25,14 +25,31 @@ import { updateOrCreateLogInstance, system } from './configs';
 	 * ---发起请求---中间件---守卫---拦截器---管道---controller---service--拦截器---请求结束---
 	 */
 
-	app.useGlobalFilters(new ErrorHandle());
-	app.use(compression());
-	app.use(httpContext.middleware);
-	app.use(requestHandle);
-	// app.useGlobalGuards(new JWTCheckHandle());
-	// app.useGlobalPipes(new ValidationPipe());
-	app.useGlobalInterceptors(new ResponseHandle() /*, new TestInterceptor()*/);
 	app.setGlobalPrefix('api/v1');
-	updateOrCreateLogInstance();
-	await app.listen(process.env.PORT);
+
+	/** 全局错误捕获 */
+	app.useGlobalFilters(new ErrorHandle());
+
+	/** 中间件 */
+	app.use(
+		csurf(),
+		compression(),
+		httpContext.middleware,
+		requestHandle
+	);
+
+	/** 守卫 */
+	// app.useGlobalGuards(new JWTCheckHandle());
+
+	/** 全局管道 */
+	// app.useGlobalPipes(new ValidationPipe());
+
+	/** 后置拦截器 */
+	app.useGlobalInterceptors(new ResponseHandle() /*, new TestInterceptor()*/);
+
+	updateOrCreateLogInstance(); // 日志初始化
+
+	await app.listen(process.env.PORT, async () => {
+		system('startup').debug(`nest server is running at ${await app.getUrl()}`);
+	});
 })();
