@@ -5,6 +5,8 @@
  */
 import { NestFactory } from '@nestjs/core';
 import * as httpContext from 'express-http-context';
+import * as compression from 'compression';
+
 import { V1AppModule } from '@/module';
 import { requestHandle } from '@/middleware';
 import { ResponseHandle /*, TestInterceptor*/ } from '@/interceptor';
@@ -21,6 +23,7 @@ import { ErrorHandle } from '@/filter';
 	 */
 
 	app.useGlobalFilters(new ErrorHandle());
+	app.use(compression());
 	app.use(httpContext.middleware);
 	app.use(requestHandle);
 	// app.useGlobalGuards(new JWTCheckHandle());
