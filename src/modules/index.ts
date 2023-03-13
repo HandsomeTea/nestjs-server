@@ -6,7 +6,6 @@ import { ConfigModule } from '@nestjs/config';
 	imports: [
 		UserModule,
 		ConfigModule.forRoot({
-			isGlobal: true,
 			ignoreEnvFile: !(!process.env.NODE_ENV || process.env.NODE_ENV === 'development'),
 			envFilePath: ['.env.local']
 		})

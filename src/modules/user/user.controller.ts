@@ -40,7 +40,7 @@ export class UserController {
 	@Get('test/n')
 	// getHello(@User() user: UserEntity): string { //自定义修饰器的使用
 	// getHello(@Query(new ValidationPipe) a: string): string { // 管道注册
-	getHello(): string {
-		return this.userService.getHello();
+	async getHello(): Promise<string> {
+		return await this.userService.getHello();
 	}
 }

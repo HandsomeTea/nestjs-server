@@ -32,5 +32,5 @@ import { updateOrCreateLogInstance } from './configs';
 	app.useGlobalInterceptors(new ResponseHandle() /*, new TestInterceptor()*/);
 	app.setGlobalPrefix('api/v1');
 	updateOrCreateLogInstance();
-	await app.listen(3003);
+	await app.listen(process.env.PORT);
 })();
