@@ -1,3 +1,6 @@
+import { MongodbModule } from '@/db/mongodb/mongodb.module';
+import { UsersProvider } from '@/db/mongodb/providers/user.providers';
+import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
 
@@ -6,13 +9,19 @@ describe('UserService', () => {
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
-			providers: [UserService]
+			imports: [
+				MongodbModule,
+				ConfigModule.forRoot({
+					envFilePath: ['.env.local']
+				})
+			],
+			providers: [UserService, UsersProvider]
 		}).compile();
 
 		service = module.get<UserService>(UserService);
 	});
 
 	it('should be defined', () => {
-		expect(service.getHello()).toBe('Hello World!');
+		expect(service).toBeDefined();
 	});
 });

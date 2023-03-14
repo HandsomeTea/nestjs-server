@@ -22,10 +22,10 @@ export default class Exception extends HttpException {
 			this.reason = variable;
 		}
 
-		// const serverName = getENV('SERVER_NAME');
+		const serverName = process.env.SERVER_NAME;
 
-		// if (serverName && !this.source.includes(serverName)) {
-		// 	this.source.push(serverName);
-		// }
+		if (serverName && !this.source.includes(serverName)) {
+			this.source.push(serverName);
+		}
 	}
 }

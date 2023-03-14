@@ -1,19 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 // import { User } from '@/decorator';
-// import { ValidationPipe } from '@/pipe';
+import { ValidationPipe } from '@/pipes';
 // import { TestInterceptor } from '@/interceptor';
 
 // @UseInterceptors(TestInterceptor)
 @Controller('user')
 export class UserController {
-	constructor(private readonly userService: UserService) {}
+	constructor(private readonly userService: UserService) { }
 
+	// @UseInterceptors(TestInterceptor)
 	@Post()
-	create(@Body() createUserDto: CreateUserDto) {
-		return this.userService.create(createUserDto);
+	@UsePipes(new ValidationPipe())
+	// create(@User() user: UserEntity): string { //自定义修饰器的使用
+	create(@Body() user: CreateUserDto) {
+		return this.userService.create(user);
 	}
 
 	@Get()
@@ -34,13 +37,5 @@ export class UserController {
 	@Delete(':id')
 	remove(@Param('id') id: string) {
 		return this.userService.remove(+id);
-	}
-
-	// @UseInterceptors(TestInterceptor)
-	@Get('test/n')
-	// getHello(@User() user: UserEntity): string { //自定义修饰器的使用
-	// getHello(@Query(new ValidationPipe) a: string): string { // 管道注册
-	async getHello(): Promise<string> {
-		return await this.userService.getHello();
 	}
 }

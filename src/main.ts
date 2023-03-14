@@ -19,7 +19,7 @@ import { updateOrCreateLogInstance, system } from './configs';
 	updateOrCreateLogInstance(); // 日志初始化
 
 	const app = await NestFactory.create(V1AppModule, {
-		logger: system('startup')
+		logger: system('internal')
 	});
 
 	/**
