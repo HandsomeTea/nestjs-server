@@ -50,4 +50,4 @@ export default new class JWT {
 			throw new Exception('invalid JWT string!', HttpStatus.UNAUTHORIZED);
 		}
 	}
-};
+}();

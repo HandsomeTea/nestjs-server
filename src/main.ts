@@ -6,7 +6,7 @@
 import { NestFactory } from '@nestjs/core';
 import * as httpContext from 'express-http-context';
 import * as compression from 'compression';
-import * as csurf from 'csurf';
+// import * as csurf from 'csurf';
 import { V1AppModule } from '@/modules';
 import { requestHandle } from '@/middlewares';
 import { ResponseHandle /*, TestInterceptor*/ } from '@/interceptors';
@@ -35,11 +35,8 @@ import { updateOrCreateLogInstance, system } from './configs';
 
 	/** 中间件 */
 	app.use(
-		csurf(),
-		compression(),
-		httpContext.middleware,
-		requestHandle
-	);
+		// csurf(),
+		compression(), httpContext.middleware, requestHandle);
 
 	/** 守卫 */
 	// app.useGlobalGuards(new JWTCheckHandle());
