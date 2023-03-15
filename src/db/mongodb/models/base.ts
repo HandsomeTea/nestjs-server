@@ -1,17 +1,28 @@
 import {
-	SchemaDefinition, SchemaDefinitionType, IndexDefinition, IndexOptions, Model, FilterQuery,
-	QueryOptions, UpdateQuery, UpdateWithAggregationPipeline
+	SchemaDefinition,
+	SchemaDefinitionType,
+	IndexDefinition,
+	IndexOptions,
+	Model,
+	FilterQuery,
+	QueryOptions,
+	UpdateQuery,
+	UpdateWithAggregationPipeline
 } from 'mongoose';
 import { ObjectId } from 'bson';
 import * as mongoose from 'mongoose';
 import { MongoHas } from '../interfaces';
 
-export default class MongoBase<CM>{
+export default class MongoBase<CM> {
 	protected collectionName: string;
 	private schemaModel: SchemaDefinition<SchemaDefinitionType<CM>>;
-	private index: Array<{ fields: IndexDefinition, options?: IndexOptions }> | undefined;
+	private index: Array<{ fields: IndexDefinition; options?: IndexOptions }> | undefined;
 
-	constructor(collectionName: string, schema: SchemaDefinition<SchemaDefinitionType<CM>>, index?: Array<{ fields: IndexDefinition, options?: IndexOptions }>) {
+	constructor(
+		collectionName: string,
+		schema: SchemaDefinition<SchemaDefinitionType<CM>>,
+		index?: Array<{ fields: IndexDefinition; options?: IndexOptions }>
+	) {
 		this.collectionName = collectionName;
 		this.schemaModel = schema;
 		this.index = index;
@@ -41,7 +52,7 @@ export default class MongoBase<CM>{
 		return await this.model.insertMany(data, { lean: true });
 	}
 
-	async deleteOne(query: FilterQuery<CM>, options?: QueryOptions<CM>): Promise<{ acknowledged: boolean, deletedCount: number }> {
+	async deleteOne(query: FilterQuery<CM>, options?: QueryOptions<CM>): Promise<{ acknowledged: boolean; deletedCount: number }> {
 		return await this.model.deleteOne(query, options);
 	}
 
@@ -52,12 +63,16 @@ export default class MongoBase<CM>{
 	// 	return { deletedCount: 0 };
 	// }
 
-	async updateOne(query: FilterQuery<CM>, update: UpdateQuery<CM> | UpdateWithAggregationPipeline, options?: QueryOptions<CM>): Promise<{
-		acknowledged: boolean
-		modifiedCount: number
-		upsertedId: null | ObjectId
-		upsertedCount: number
-		matchedCount: number
+	async updateOne(
+		query: FilterQuery<CM>,
+		update: UpdateQuery<CM> | UpdateWithAggregationPipeline,
+		options?: QueryOptions<CM>
+	): Promise<{
+		acknowledged: boolean;
+		modifiedCount: number;
+		upsertedId: null | ObjectId;
+		upsertedCount: number;
+		matchedCount: number;
 	}> {
 		return await this.model.updateOne(query, update, options);
 	}
@@ -94,7 +109,7 @@ export default class MongoBase<CM>{
 	// 	return null;
 	// }
 
-	async findById(_id: string, options?: QueryOptions<CM>): Promise<null | CM & MongoHas> {
+	async findById(_id: string, options?: QueryOptions<CM>): Promise<null | (CM & MongoHas)> {
 		return await this.model.findById(_id, options).lean();
 	}
 

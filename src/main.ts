@@ -36,7 +36,10 @@ import { updateOrCreateLogInstance, system } from './configs';
 	/** 中间件 */
 	app.use(
 		// csurf(),
-		compression(), httpContext.middleware, requestHandle);
+		compression(),
+		httpContext.middleware,
+		requestHandle
+	);
 
 	/** 守卫 */
 	// app.useGlobalGuards(new JWTCheckHandle());

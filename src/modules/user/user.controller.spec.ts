@@ -10,10 +10,7 @@ describe('UserController', () => {
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
-			imports: [
-				DbModule,
-				ConfigModule.forRoot({ envFilePath: ['.env.local'] })
-			],
+			imports: [DbModule, ConfigModule.forRoot({ envFilePath: ['.env.local'] })],
 			controllers: [UserController],
 			providers: [UserService, UsersProvider]
 		}).compile();

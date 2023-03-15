@@ -17,12 +17,14 @@ describe('v1 (e2e)', () => {
 	});
 
 	it('/api/v1/user (GET)', () => {
-		return request(app.getHttpServer())
-			.get('/api/v1/user')
-			.expect(200)
-			// .expect(res => {
-			// 	console.log(res.body);
-			// })
-			.end();
+		return (
+			request(app.getHttpServer())
+				.get('/api/v1/user')
+				.expect(200)
+				// .expect(res => {
+				// 	console.log(res.body);
+				// })
+				.end()
+		);
 	});
 });

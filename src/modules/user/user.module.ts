@@ -9,4 +9,4 @@ import { UsersProvider } from '@/db/db.providers';
 	controllers: [UserController],
 	providers: [UserService, UsersProvider]
 })
-export class UserModule { }
+export class UserModule {}

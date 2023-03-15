@@ -5,4 +5,4 @@ import { dbConnectProvider, UsersProvider } from './db.providers';
 	providers: [dbConnectProvider, UsersProvider],
 	exports: [dbConnectProvider, UsersProvider]
 })
-export class DbModule { }
+export class DbModule {}

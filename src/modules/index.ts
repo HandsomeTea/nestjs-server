@@ -14,4 +14,4 @@ import { UserModule } from './user/user.module';
 		UserModule
 	]
 })
-export class V1AppModule { }
+export class V1AppModule {}
