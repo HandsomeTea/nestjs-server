@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { /*HttpError, Exception,*/ log } from '@/configs';
+// import { HttpError, Exception } from '@/configs';
 import { UserModel } from '@/db/mongodb/interfaces';
 
 @Injectable()
@@ -11,30 +11,28 @@ export class UserService {
 		@Inject('USER_MODEL') private UserModel: Model<UserModel>
 	) { }
 
-	async create(createUserDto: CreateUserDto) {
-		log().debug(createUserDto);
-		const result = await this.UserModel.create(createUserDto);
+	async create(user: CreateUserDto) {
+		const result = await this.UserModel.create(user);
 
-		// return process.env.PORT;
-		// throw new Exception('cuo le', HttpError.BE_LOGOUT);
-		// throw new Exception('cuo le', HttpStatus.BAD_GATEWAY, ['213123221']);
 		return result._id.toString();
 	}
 
-	findAll() {
-		return [];
+	async findAll() {
+		// return process.env.PORT;
+		// throw new Exception('cuo le', HttpError.BE_LOGOUT);
+		// throw new Exception('cuo le', HttpStatus.BAD_GATEWAY, ['213123221']);
+		return await this.UserModel.find();
 	}
 
-	findOne(id: number) {
-		return `This action returns a #${id} user`;
+	async findOne(id: string) {
+		return await this.UserModel.findById(id);
 	}
 
-	update(id: number, updateUserDto: UpdateUserDto) {
-		log().debug(updateUserDto);
-		return `This action updates a #${id} user`;
+	async update(id: string, updateUser: UpdateUserDto) {
+		return (await this.UserModel.updateOne({ _id: id }, { $set: updateUser })).modifiedCount === 1;
 	}
 
-	remove(id: number) {
-		return `This action removes a #${id} user`;
+	async remove(id: string) {
+		return await this.UserModel.deleteOne({ _id: id });
 	}
 }

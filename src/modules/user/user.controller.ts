@@ -2,9 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes } from '@ne
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-// import { User } from '@/decorator';
-import { ValidationPipe } from '@/pipes';
-// import { TestInterceptor } from '@/interceptor';
+// import { ReqUserInfo } from '@/decorators';
+import { ValidationDtoPipe } from '@/pipes';
+// import { TestInterceptor } from '@/interceptors';
 
 // @UseInterceptors(TestInterceptor)
 @Controller('user')
@@ -13,8 +13,8 @@ export class UserController {
 
 	// @UseInterceptors(TestInterceptor)
 	@Post()
-	@UsePipes(new ValidationPipe())
-	// create(@User() user: UserEntity): string { //自定义修饰器的使用
+	@UsePipes(new ValidationDtoPipe())
+	// create(@ReqUserInfo() user: Record<string, string>) { //自定义修饰器的使用
 	create(@Body() user: CreateUserDto) {
 		return this.userService.create(user);
 	}
@@ -26,16 +26,16 @@ export class UserController {
 
 	@Get(':id')
 	findOne(@Param('id') id: string) {
-		return this.userService.findOne(+id);
+		return this.userService.findOne(id);
 	}
 
 	@Patch(':id')
-	update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-		return this.userService.update(+id, updateUserDto);
+	update(@Param('id') id: string, @Body(new ValidationDtoPipe()) updateUser: UpdateUserDto) {
+		return this.userService.update(id, updateUser);
 	}
 
 	@Delete(':id')
 	remove(@Param('id') id: string) {
-		return this.userService.remove(+id);
+		return this.userService.remove(id);
 	}
 }

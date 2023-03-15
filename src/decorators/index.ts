@@ -2,8 +2,8 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
 // 自定义用于获取req上的通用用户数据的修饰器
-export const User = createParamDecorator((data: unknown, ctx: ExecutionContext) => {
+export const ReqUserInfo = createParamDecorator((data: unknown, ctx: ExecutionContext) => {
 	const request = ctx.switchToHttp().getRequest();
 
-	return request.user || {};
+	return request.user || { test: 'test123' };
 });
