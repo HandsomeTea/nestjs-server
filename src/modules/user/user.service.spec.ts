@@ -11,9 +11,7 @@ describe('UserService', () => {
 		const module: TestingModule = await Test.createTestingModule({
 			imports: [
 				MongodbModule,
-				ConfigModule.forRoot({
-					envFilePath: ['.env.local']
-				})
+				ConfigModule.forRoot({ envFilePath: ['.env.local'] })
 			],
 			providers: [UserService, UsersProvider]
 		}).compile();
