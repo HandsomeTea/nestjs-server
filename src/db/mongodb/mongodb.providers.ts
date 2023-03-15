@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 import { system } from '@/configs';
-import { Users } from './models';
+import Users from './models/user';
 
 export const dbConnectProvider = {
 	provide: 'DATABASE_CONNECTION',

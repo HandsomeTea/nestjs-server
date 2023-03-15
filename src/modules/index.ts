@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { MongodbModule } from '@/db/mongodb/mongodb.module';
+import { DbModule } from '@/db/db.module';
 import { HealthModule } from './health/health.module';
 import { UserModule } from './user/user.module';
 
@@ -9,7 +9,7 @@ import { UserModule } from './user/user.module';
 		ConfigModule.forRoot({
 			envFilePath: !process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? ['.env.local'] : []
 		}),
-		MongodbModule,
+		DbModule,
 		HealthModule,
 		UserModule
 	]

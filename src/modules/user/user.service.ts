@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 // import { HttpError, Exception } from '@/configs';
-import { Users } from '@/db/mongodb/models';
+import { Users } from '@/db/db.models';
 
 @Injectable()
 export class UserService {
