@@ -1,20 +1,17 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 // import { HttpError, Exception } from '@/configs';
-import { UserModel } from '@/db/mongodb/interfaces';
+import { Users } from '@/db/mongodb/models';
 
 @Injectable()
 export class UserService {
 	constructor(
-		@Inject('USER_MODEL') private UserModel: Model<UserModel>
+		@Inject('USER_MODEL') private UserModel: Users
 	) { }
 
 	async create(user: CreateUserDto) {
-		const result = await this.UserModel.create(user);
-
-		return result._id.toString();
+		return await this.UserModel.insertOne(user);
 	}
 
 	async findAll() {
@@ -29,7 +26,7 @@ export class UserService {
 	}
 
 	async update(id: string, updateUser: UpdateUserDto) {
-		return (await this.UserModel.updateOne({ _id: id }, { $set: updateUser })).modifiedCount === 1;
+		return await this.UserModel.updateOne({ _id: id }, { $set: updateUser });
 	}
 
 	async remove(id: string) {

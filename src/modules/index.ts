@@ -10,7 +10,7 @@ import { UserModule } from './user/user.module';
 		HealthModule,
 		UserModule,
 		ConfigModule.forRoot({
-			ignoreEnvFile: !(!process.env.NODE_ENV || process.env.NODE_ENV === 'development'),
+			ignoreEnvFile: process.env.NODE_ENV === 'production',
 			envFilePath: ['.env.local']
 		})
 	]

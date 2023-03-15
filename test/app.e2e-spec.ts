@@ -16,7 +16,13 @@ describe('v1 (e2e)', () => {
 		await app.init();
 	});
 
-	it('/api/v1/user/test/n (GET)', () => {
-		return request(app.getHttpServer()).get('/api/v1/user/test/n').expect(200).expect('Hello World!');
+	it('/api/v1/user (GET)', () => {
+		return request(app.getHttpServer())
+			.get('/api/v1/user')
+			.expect(200)
+			// .expect(res => {
+			// 	console.log(res.body);
+			// })
+			.end();
 	});
 });

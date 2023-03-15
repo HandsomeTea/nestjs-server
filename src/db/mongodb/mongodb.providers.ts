@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
-
 import { system } from '@/configs';
+import { Users } from './models';
 
 export const dbConnectProvider = {
 	provide: 'DATABASE_CONNECTION',
@@ -17,4 +17,10 @@ export const dbConnectProvider = {
 			});
 		return await mongoose.connect(process.env.DB_URL);
 	}
+};
+
+export const UsersProvider = {
+	provide: 'USER_MODEL',
+	useFactory: () => new Users(),
+	inject: ['DATABASE_CONNECTION']
 };

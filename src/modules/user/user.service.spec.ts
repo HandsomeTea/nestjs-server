@@ -1,5 +1,5 @@
 import { MongodbModule } from '@/db/mongodb/mongodb.module';
-import { UsersProvider } from '@/db/mongodb/providers/user.providers';
+import { UsersProvider } from '@/db/mongodb/mongodb.providers';
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
