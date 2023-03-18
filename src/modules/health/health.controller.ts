@@ -10,8 +10,8 @@ export class HealthController {
 	@HealthCheck()
 	async check() {
 		return await this.health.check([
-			// async () => await this.mongoose.pingCheck('mongoose')
-			async () => await this.sequelize.pingCheck('sequelize')
+			async () => await this.mongoose.pingCheck('mongoose')
+			// async () => await this.sequelize.pingCheck('sequelize')
 		]);
 	}
 }
