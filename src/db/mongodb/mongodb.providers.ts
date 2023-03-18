@@ -3,7 +3,7 @@ import { system } from '@/configs';
 import Users from './models/user';
 
 export const dbConnectProvider = {
-	provide: 'DATABASE_CONNECTION',
+	provide: 'MONGODB_CONNECTION',
 	useFactory: async (): Promise<typeof mongoose> => {
 		mongoose.connection
 			.once('connected', () => {
@@ -22,5 +22,5 @@ export const dbConnectProvider = {
 export const UsersProvider = {
 	provide: 'USER_MODEL',
 	useFactory: () => new Users(),
-	inject: ['DATABASE_CONNECTION']
+	inject: ['MONGODB_CONNECTION']
 };

@@ -33,7 +33,7 @@ export const dbConnectProvider = {
 		});
 
 		sequelize.addModels([User]);
-		await sequelize.sync();
+		// await sequelize.sync();
 		sequelize
 			.authenticate()
 			.then(() => {
@@ -49,5 +49,7 @@ export const dbConnectProvider = {
 
 export const UsersProvider = {
 	provide: 'USER_MODEL',
-	useValue: User
+	// useValue: User
+	useFactory: () => new User('user'),
+	inject: ['SEQUELIZE_CONNECTION']
 };

@@ -6,15 +6,10 @@ import { Users } from '@/db/db.models';
 
 @Injectable()
 export class UserService {
-	constructor(@Inject('USER_MODEL') private UserModel: typeof Users) { }
+	constructor(@Inject('USER_MODEL') private UserModel: Users) { }
 
 	async create(user: CreateUserDto) {
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		// const res = await this.UserModel.insertOne(user);
-
-		// console.log(res);
-		return await this.UserModel.create(user);
+		return await this.UserModel.insertOne(user);
 	}
 
 	// async findAll() {
