@@ -47,7 +47,7 @@ export const dbConnectProvider = {
 	}
 };
 
-export const UsersProvider = {
+export const UserProvider = {
 	provide: 'USER_MODEL',
 	// useValue: User
 	useFactory: () => new User('user'),
