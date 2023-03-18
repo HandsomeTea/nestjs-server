@@ -5,14 +5,14 @@ import User from './entitys/user';
 export const dbConnectProvider = {
 	provide: 'SEQUELIZE_CONNECTION',
 	useFactory: async () => {
-		const { hostname, port, username, password } = new URL(process.env.DB_URL);
+		const { hostname, port, username, password, pathname } = new URL(process.env.DB_URL);
 		const sequelize = new Sequelize({
 			dialect: 'postgres',
 			host: hostname,
 			port: parseInt(port),
 			username,
 			password,
-			database: 'nest',
+			database: pathname.substring(1),
 			schema: 'public',
 			define: {
 				freezeTableName: true,
@@ -33,7 +33,7 @@ export const dbConnectProvider = {
 		});
 
 		sequelize.addModels([User]);
-		// await sequelize.sync();
+		await sequelize.sync();
 		sequelize
 			.authenticate()
 			.then(() => {
