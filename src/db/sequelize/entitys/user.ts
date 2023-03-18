@@ -1,6 +1,6 @@
 import { Table, Column, PrimaryKey, AllowNull } from 'sequelize-typescript';
 import BaseModel from './base';
-import { UserModel } from '../interface';
+import { UserModel } from '../../db.interfaces';
 
 @Table({ modelName: 'user', createdAt: true, updatedAt: true })
 export default class User extends BaseModel<UserModel> {

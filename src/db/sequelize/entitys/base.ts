@@ -1,5 +1,5 @@
 import { Model } from 'sequelize-typescript';
-import { SqlHas } from '../interface';
+import { SqlHas } from '../../db.interfaces';
 
 export default class SequelizeBase<TM> extends Model<TM> {
 	private modelName: string;

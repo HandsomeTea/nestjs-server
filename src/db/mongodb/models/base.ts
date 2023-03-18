@@ -11,7 +11,7 @@ import {
 } from 'mongoose';
 import { ObjectId } from 'bson';
 import * as mongoose from 'mongoose';
-import { MongoHas } from '../interfaces';
+import { MongoHas } from '../../db.interfaces';
 
 export default class MongoBase<CM> {
 	protected collectionName: string;
