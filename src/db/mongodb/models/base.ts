@@ -1,9 +1,8 @@
 import {
-	SchemaDefinition,
-	SchemaDefinitionType,
 	IndexDefinition,
 	IndexOptions,
 	Model,
+	Schema,
 	FilterQuery,
 	QueryOptions,
 	UpdateQuery,
@@ -15,31 +14,32 @@ import { MongoHas } from '../../db.interfaces';
 
 export default class MongoBase<CM> {
 	protected collectionName: string;
-	private schemaModel: SchemaDefinition<SchemaDefinitionType<CM>>;
+	private schema: Schema<CM>;
 	private index: Array<{ fields: IndexDefinition; options?: IndexOptions }> | undefined;
 
 	constructor(
 		collectionName: string,
-		schema: SchemaDefinition<SchemaDefinitionType<CM>>,
+		schema: Schema<CM>,
 		index?: Array<{ fields: IndexDefinition; options?: IndexOptions }>
 	) {
 		this.collectionName = collectionName;
-		this.schemaModel = schema;
+		this.schema = schema;
 		this.index = index;
 	}
 
 	private get model(): Model<CM> {
-		const schema = new mongoose.Schema(this.schemaModel, {
-			versionKey: false,
-			timestamps: { createdAt: true, updatedAt: true }
+		this.schema.set('timestamps', {
+			createdAt: true,
+			updatedAt: true
 		});
+		this.schema.set('versionKey', false);
 
 		if (this.index) {
 			for (let s = 0; s < this.index.length; s++) {
-				schema.index(this.index[s].fields, this.index[s].options);
+				this.schema.index(this.index[s].fields, this.index[s].options);
 			}
 		}
-		return mongoose.connection.model<CM>(this.collectionName, schema, this.collectionName);
+		return mongoose.connection.model<CM>(this.collectionName, this.schema, this.collectionName);
 	}
 
 	async insertOne(data: CM): Promise<CM & MongoHas> {

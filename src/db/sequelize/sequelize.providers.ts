@@ -49,7 +49,6 @@ export const dbConnectProvider = {
 
 export const UserProvider = {
 	provide: 'USER_MODEL',
-	// useValue: User
 	useFactory: () => new User('user'),
 	inject: ['SEQUELIZE_CONNECTION']
 };
