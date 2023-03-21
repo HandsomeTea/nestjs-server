@@ -18,3 +18,6 @@ export interface SqlHas {
 export interface UserModel {
 	readonly name: string;
 }
+
+
+export type KeysOf<T> = { [P in keyof T]?: T[P] | unknown };

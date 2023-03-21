@@ -1,8 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
-import { UserProvider } from '@/db/db.providers';
-import { DbModule } from '@/db/db.module';
+import { DalModule } from '@/dal/dal.module';
 import { ConfigModule } from '@nestjs/config';
 
 describe('UserController', () => {
@@ -10,9 +9,9 @@ describe('UserController', () => {
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
-			imports: [DbModule, ConfigModule.forRoot({ envFilePath: ['.env.local'] })],
+			imports: [DalModule, ConfigModule.forRoot({ envFilePath: ['.env.local'] })],
 			controllers: [UserController],
-			providers: [UserService, UserProvider]
+			providers: [UserService, DalModule]
 		}).compile();
 
 		controller = module.get<UserController>(UserController);
