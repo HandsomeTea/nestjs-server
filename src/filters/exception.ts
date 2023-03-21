@@ -1,4 +1,4 @@
-import { ExceptionFilter, Catch, ArgumentsHost, HttpException } from '@nestjs/common';
+import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common';
 import { Response, Request } from 'express';
 import * as httpContext from 'express-http-context';
 import { Exception, trace } from '@/configs';
@@ -13,9 +13,9 @@ export default class HttpExceptionFilter implements ExceptionFilter {
 		const status = exception.getStatus();
 		const result = {
 			message: exception.message,
-			code: exception.code,
+			code: exception.code || HttpStatus[status],
 			reason: exception.reason || {},
-			source: exception.source
+			source: exception.source || [process.env.SERVER_NAME]
 		};
 
 		trace(
