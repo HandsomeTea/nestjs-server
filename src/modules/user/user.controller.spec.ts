@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
-import { DalModule } from '@/dal/dal.module';
+import { DalModule } from '@/dal';
 import { ConfigModule } from '@nestjs/config';
 
 describe('UserController', () => {

@@ -1,6 +1,6 @@
 import { ConfigModule } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
-import { DalModule } from '@/dal/dal.module';
+import { DalModule } from '@/dal';
 import { UserService } from './user.service';
 
 describe('UserService', () => {
