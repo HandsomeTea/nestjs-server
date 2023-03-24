@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 // import { HttpError, Exception } from '@/configs';
-import { UserDal } from '@/dal/user';
+import { UserDal } from '@/dal/user.dal';
 
 @Injectable()
 export class UserService {

@@ -1,19 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { InjectRedisClient } from 'nestjs-ioredis';
-import Redis from 'ioredis';
 import { User } from '@/db/db.models';
 import { KeysOf, UserModel } from '@/db/db.interfaces';
+import { CacheServer } from './cache/cache.interfaces';
 
 @Injectable()
 export class UserDal {
 	constructor(
-		@InjectRedisClient('test') private redis: Redis,
+		@Inject('CACHE_MODEL') private cacheServer: CacheServer,
 		@Inject('USER_MODEL') private user: User
 	) { }
-
-	private catchKey(userId: string): string {
-		return `user:id_${userId}`;
-	}
 
 	async insertOne(data: UserModel) {
 		return await this.user.insertOne(data);
@@ -24,17 +19,17 @@ export class UserDal {
 	}
 
 	async findById(id: string) {
-		const redisResult = await this.redis.get(this.catchKey(id));
+		const cacheResult = await this.cacheServer.getUserById(id);
 
-		if (redisResult) {
-			return JSON.parse(redisResult) as UserModel;
+		if (cacheResult) {
+			return cacheResult;
 		}
 		const result = await this.user.findById(id);
 
 		if (!result) {
 			return null;
 		}
-		await this.redis.set(this.catchKey(id), JSON.stringify(result), 'EX', Math.floor(Math.random() * 11 + 50) * 60); //秒为单位
+		await this.cacheServer.setUserById(result);
 		return result;
 	}
 

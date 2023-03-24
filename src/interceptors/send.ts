@@ -24,7 +24,7 @@ export default class TransformResponse implements NestInterceptor {
 						parentSpanId: httpContext.get('parentSpanId')
 					},
 					'return-response'
-				).info(`${request.method}: ${request.originalUrl} => \n${JSON.stringify(data, null, '   ')}`);
+				).info(request ? `${request.method}: ${request.originalUrl} => \n${JSON.stringify(data, null, '   ')}` : JSON.stringify(data, null, '   '));
 				return data;
 			})
 		);
