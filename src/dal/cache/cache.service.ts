@@ -18,6 +18,8 @@ export class CacheService implements CacheServer {
 	}
 
 	async getUserById(userId: string): Promise<UserModel> {
-		return await this.server.get(this.cacheUserKey(userId)) as unknown as UserModel;
+		const result = await this.server.get(this.cacheUserKey(userId));
+
+		return JSON.parse(result) as UserModel;
 	}
 }

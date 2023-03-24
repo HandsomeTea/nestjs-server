@@ -11,7 +11,7 @@ import { V1AppModule } from '@/modules';
 import { requestHandle } from '@/middlewares';
 import { ResponseHandle /*, TestInterceptor*/ } from '@/interceptors';
 import { ErrorHandle } from '@/filters';
-import { updateOrCreateLogInstance, system } from './configs';
+import { updateOrCreateLogInstance, system } from '@/configs';
 // import { JWTCheckHandle } from '@/guard';
 // import { ValidationPipe } from '@/pipe';
 
