@@ -6,6 +6,7 @@ import { CacheServer } from './cache.interfaces';
 
 @Injectable()
 export class CacheService implements CacheServer {
+	// 也可以注入别的缓存服务
 	constructor(@InjectRedisClient('test') private server: Redis) { }
 
 	private cacheUserKey(userId: string): string {
