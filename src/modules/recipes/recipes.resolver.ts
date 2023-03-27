@@ -1,4 +1,5 @@
-import { NotFoundException } from '@nestjs/common';
+import { ValidationDtoPipe } from '@/pipes';
+import { NotFoundException, UsePipes } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'graphql-subscriptions';
 import { NewRecipeInput } from './dto/new-recipe.input';
@@ -23,6 +24,7 @@ export class RecipesResolver {
 	}
 
 	@Query(() => [Recipe])
+	@UsePipes(new ValidationDtoPipe()) // 使用管道验证参数
 	recipes(@Args() recipesArgs: RecipesArgs): Promise<Recipe[]> {
 		return this.recipesService.findAll(recipesArgs);
 	}

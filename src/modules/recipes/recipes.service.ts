@@ -26,7 +26,6 @@ export class RecipesService {
 	}
 
 	async findAll(recipesArgs: RecipesArgs): Promise<Recipe[]> {
-		console.log(recipesArgs);
 		return [] as Recipe[];
 	}
 

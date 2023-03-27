@@ -15,16 +15,14 @@ import { upperDirectiveTransformer } from './common/directives/upper-case.direct
 			autoSchemaFile: true,
 			transformSchema: schema => upperDirectiveTransformer(schema, 'upper'),
 			installSubscriptionHandlers: true, // 开启subscription功能
-			buildSchemaOptions: (() => {
-				return {
-					directives: [
-						new GraphQLDirective({
-							name: 'upper',
-							locations: [DirectiveLocation.FIELD_DEFINITION]
-						})
-					]
-				};
-			})()
+			buildSchemaOptions: {
+				directives: [
+					new GraphQLDirective({
+						name: 'upper',
+						locations: [DirectiveLocation.FIELD_DEFINITION]
+					})
+				]
+			}
 		})
 	],
 	providers: [RecipesResolver, RecipesService, DateScalar]

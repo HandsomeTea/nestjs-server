@@ -12,19 +12,37 @@ export default class TransformResponse implements NestInterceptor {
 	intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
 		const ctx = context.switchToHttp();
 		// const response = ctx.getResponse<Response>();
-		const request = ctx.getRequest<Request>();
 
 		return next.handle().pipe(
 			map(data => {
-				// 原response內容
-				trace(
-					{
-						traceId: httpContext.get('traceId'),
-						spanId: httpContext.get('spanId'),
-						parentSpanId: httpContext.get('parentSpanId')
-					},
-					'return-response'
-				).info(request ? `${request.method}: ${request.originalUrl} => \n${JSON.stringify(data, null, '   ')}` : JSON.stringify(data, null, '   '));
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				if (ctx.contextType === 'graphql') {
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+					// @ts-ignore
+					const request = ctx.args[2].req;
+
+					trace(
+						{
+							traceId: httpContext.get('traceId'),
+							spanId: httpContext.get('spanId'),
+							parentSpanId: httpContext.get('parentSpanId')
+						},
+						'graphql-response'
+					).info(`${request.method}: ${request.originalUrl} => \n${JSON.stringify(data, null, '   ')}`);
+				} else {
+					const request = ctx.getRequest<Request>();
+
+					trace(
+						{
+							traceId: httpContext.get('traceId'),
+							spanId: httpContext.get('spanId'),
+							parentSpanId: httpContext.get('parentSpanId')
+						},
+						'http-response'
+					).info(`${request.method}: ${request.originalUrl} => \n${JSON.stringify(data, null, '   ')}`);
+				}
+
 				return data;
 			})
 		);
