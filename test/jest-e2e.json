@@ -6,6 +6,8 @@
     "transform": {
         "^.+\\.(t|j)s$": "ts-jest"
     },
+    "forceExit": true,
+    "detectOpenHandles": true,
     "moduleNameMapper": {
         "^@/(.*)$": "<rootDir>/../src/$1"
     }
