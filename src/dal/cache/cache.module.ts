@@ -16,8 +16,7 @@ import { cacheProvider } from './cache.providers';
 					}
 				];
 			}
-		}
-		)
+		})
 	],
 	providers: [cacheProvider],
 	exports: [cacheProvider]
