@@ -17,7 +17,7 @@
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
         "test:e2e": "jest --config ./test/jest-e2e.json",
         "create": "nest g",
-        "view": "npx @compodoc/compodoc -p tsconfig.json -s"
+        "struct": "npx @compodoc/compodoc -p tsconfig.json -s"
     },
     "repository": {
         "type": "git",
@@ -30,9 +30,11 @@
     },
     "homepage": "https://github.com/HandsomeTea/nestjs-server#readme",
     "dependencies": {
+        "@nestjs/apollo": "^11.0.4",
         "@nestjs/common": "^9.0.0",
         "@nestjs/config": "^2.3.1",
         "@nestjs/core": "^9.0.0",
+        "@nestjs/graphql": "^11.0.4",
         "@nestjs/mapped-types": "*",
         "@nestjs/mongoose": "^9.2.1",
         "@nestjs/platform-express": "^9.0.0",
@@ -43,6 +45,9 @@
         "compression": "^1.7.4",
         "csurf": "^1.11.0",
         "express-http-context": "^1.2.4",
+        "graphql": "^16.6.0",
+        "graphql-query-complexity": "^0.12.0",
+        "graphql-subscriptions": "^2.0.0",
         "jsonwebtoken": "^9.0.0",
         "log4js": "^6.8.0",
         "nestjs-ioredis": "^0.1.8",
