@@ -11,7 +11,10 @@ import {
 } from 'mongoose';
 import { ObjectId } from 'bson';
 import * as mongoose from 'mongoose';
-import { MongoHas } from '../../db.interfaces';
+import { MongoHas } from '@/db/db.interfaces';
+
+
+type Mongo<T> = Readonly<T & MongoHas>
 
 export default class MongoBase<CM> {
 	protected collectionName: string;
@@ -43,28 +46,28 @@ export default class MongoBase<CM> {
 		return mongoose.connection.model<CM>(this.collectionName, this.schema, this.collectionName);
 	}
 
-	async insertOne(data: CM): Promise<CM & MongoHas> {
+	async insertOne(data: CM): Promise<Mongo<CM>> {
 		return (await new this.model(data).save()).toObject();
 	}
 
-	async insertMany(data: Array<CM>): Promise<Array<CM & MongoHas>> {
+	async insertMany(data: Array<CM>): Promise<Array<Mongo<CM>>> {
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-ignore
 		return await this.model.insertMany(data, { lean: true });
 	}
 
-	async deleteOne(query: FilterQuery<CM>, options?: QueryOptions<CM>): Promise<{ acknowledged: boolean; deletedCount: number }> {
+	async deleteOne(query: FilterQuery<Mongo<CM>>, options?: QueryOptions<Mongo<CM>>): Promise<{ acknowledged: boolean; deletedCount: number }> {
 		return await this.model.deleteOne(query, options).lean();
 	}
 
-	async deleteMany(query: FilterQuery<CM>): Promise<{ deletedCount: number }> {
+	async deleteMany(query: FilterQuery<Mongo<CM>>): Promise<{ deletedCount: number }> {
 		return await this.model.deleteMany(query).lean();
 	}
 
 	async updateOne(
-		query: FilterQuery<CM>,
-		update: UpdateQuery<CM> | UpdateWithAggregationPipeline,
-		options?: QueryOptions<CM>
+		query: FilterQuery<Mongo<CM>>,
+		update: UpdateQuery<Mongo<CM>> | UpdateWithAggregationPipeline,
+		options?: QueryOptions<Mongo<CM>>
 	): Promise<{
 		acknowledged: boolean;
 		modifiedCount: number;
@@ -75,7 +78,7 @@ export default class MongoBase<CM> {
 		return await this.model.updateOne(query, update, options).lean();
 	}
 
-	async updateMany(query: FilterQuery<CM>, update: UpdateQuery<CM> | UpdateWithAggregationPipeline, options?: QueryOptions<CM>): Promise<{
+	async updateMany(query: FilterQuery<Mongo<CM>>, update: UpdateQuery<Mongo<CM>> | UpdateWithAggregationPipeline, options?: QueryOptions<Mongo<CM>>): Promise<{
 		acknowledged: boolean
 		modifiedCount: number
 		upsertedId: null | ObjectId
@@ -85,19 +88,19 @@ export default class MongoBase<CM> {
 		return await this.model.updateMany(query, update, options).lean();
 	}
 
-	async find(query?: FilterQuery<CM>, options?: QueryOptions<CM>): Promise<Array<CM & MongoHas>> {
+	async find(query?: FilterQuery<Mongo<CM>>, options?: QueryOptions<Mongo<CM>>): Promise<Array<Mongo<CM>>> {
 		return await this.model.find(query || {}, null, options).lean();
 	}
 
-	async findOne(query: FilterQuery<CM>, options?: QueryOptions<CM>) {
+	async findOne(query: FilterQuery<Mongo<CM>>, options?: QueryOptions<Mongo<CM>>) {
 		return await this.model.findOne(query, null, options).lean();
 	}
 
-	async findById(_id: string, options?: QueryOptions<CM>): Promise<null | (CM & MongoHas)> {
+	async findById(_id: string, options?: QueryOptions<Mongo<CM>>): Promise<null | Mongo<CM>> {
 		return await this.model.findById(_id, null, options).lean();
 	}
 
-	async paging<K extends keyof CM>(query: FilterQuery<CM>, limit: number, skip: number, sort?: Record<K, 'asc' | 'desc' | 'ascending' | 'descending'>, options?: QueryOptions<CM>) {
+	async paging<K extends keyof CM>(query: FilterQuery<Mongo<CM>>, limit: number, skip: number, sort?: Record<K, 'asc' | 'desc' | 'ascending' | 'descending'>, options?: QueryOptions<Mongo<CM>>) {
 		return {
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			// @ts-ignore
@@ -108,12 +111,12 @@ export default class MongoBase<CM> {
 					Object.keys(sort).filter(a => !!sort[a]).map(b => obj[b] = sort[b]);
 				}
 				return obj;
-			})()).skip(skip || 0).limit(limit).lean(),
+			})()).skip(skip || 0).limit(limit).lean() as Mongo<CM>,
 			total: await this.count(query)
 		};
 	}
 
-	async count(query?: FilterQuery<CM>): Promise<number> {
+	async count(query?: FilterQuery<Mongo<CM>>): Promise<number> {
 		if (Object.keys(query || {}).length > 0) {
 			return await this.model.countDocuments(query || {});
 		} else {

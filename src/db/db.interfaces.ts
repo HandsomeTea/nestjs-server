@@ -5,19 +5,16 @@ export interface MongoHas {
 	updatedAt: Date;
 }
 
-export interface SqlHas {
-	createdAt: Date;
-	updatedAt: Date;
-}
-
-// export interface UserModel {
-//     id: number;
-//     name: string;
+// export interface SqlHas {
+// 	createdAt: Date;
+// 	updatedAt: Date;
 // }
 
-export interface UserModel {
-	readonly name: string;
+export type UserData = {
+	name: string;
 }
+
+export type UserModel = Readonly<MongoHas & UserData>
 
 
 export type KeysOf<T> = { [P in keyof T]?: T[P] | unknown };

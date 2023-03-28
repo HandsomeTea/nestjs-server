@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { UserModel } from '../../db.interfaces';
+import { UserData } from '@/db/db.interfaces';
 import BaseModel from './base';
 
 @Schema()
@@ -9,7 +9,7 @@ class UserSchema {
 }
 
 
-export default class User extends BaseModel<UserModel> {
+export default class User extends BaseModel<UserData> {
 	constructor() {
 		super('user', SchemaFactory.createForClass(UserSchema));
 	}
