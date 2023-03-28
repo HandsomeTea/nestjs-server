@@ -14,7 +14,7 @@ import * as mongoose from 'mongoose';
 import { MongoHas } from '@/db/db.interfaces';
 
 
-type Mongo<T> = Readonly<T & MongoHas>
+type Mongo<T> = Readonly<MongoHas & T>
 
 export default class MongoBase<CM> {
 	protected collectionName: string;
