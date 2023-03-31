@@ -7,7 +7,7 @@ type Sql<T> = Readonly<SqlHas & T>
 export default class SequelizeBase<TM> extends Model<TM> {
 	private modelName: string;
 
-	constructor(...args) {
+	protected constructor(...args) {
 		super(...args);
 		this.modelName = args[0];
 	}

@@ -21,7 +21,7 @@ export default class MongoBase<CM> {
 	private schema: Schema<CM>;
 	private index: Array<{ fields: IndexDefinition; options?: IndexOptions }> | undefined;
 
-	constructor(
+	protected constructor(
 		collectionName: string,
 		schema: Schema<CM>,
 		index?: Array<{ fields: IndexDefinition; options?: IndexOptions }>
