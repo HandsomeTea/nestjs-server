@@ -16,20 +16,18 @@ export class RecipesService {
 			id: new Date().getTime() + '',
 			creationDate: new Date(),
 			...data
-		} as any;
+		};
 	}
 
 	async findOneById(id: string): Promise<Recipe> {
-		return {
-			id: '123'
-		} as any;
+		return (global.arr || []).find(a => a.id === id) || {};
 	}
 
 	async findAll(recipesArgs: RecipesArgs): Promise<Recipe[]> {
-		return [] as Recipe[];
+		return global.arr || [].filter((a, b) => b >= recipesArgs.skip && b < recipesArgs.take) as Recipe[];
 	}
 
 	async remove(id: string): Promise<boolean> {
-		return true;
+		return global.arr = (global.arr || []).filter(a => a.id !== id);
 	}
 }

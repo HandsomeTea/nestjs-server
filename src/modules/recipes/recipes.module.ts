@@ -8,6 +8,12 @@ import { DirectiveLocation, GraphQLDirective } from 'graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { upperDirectiveTransformer } from './common/directives/upper-case.directive';
 
+/**
+ * graphql数据后置处理的顺序
+ * http的response转换器(后置拦截器)--->graphql的字段中间件--->Apollo的Directive：自定义的transformSchema
+ * 从resolver返回数据开始，后续的字段中间件、Directive对数据的操作都不影响实际的数据，只影响返回的数据
+ */
+
 @Module({
 	imports: [
 		GraphQLModule.forRoot<ApolloDriverConfig>({

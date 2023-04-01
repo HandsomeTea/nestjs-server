@@ -14,7 +14,6 @@ export function upperDirectiveTransformer(
 			)?.[0];
 
 			if (upperDirective) {
-				console.log(upperDirective, fieldConfig);
 				const { resolve = defaultFieldResolver } = fieldConfig;
 
 				// Replace the original resolver with a function that *first* calls

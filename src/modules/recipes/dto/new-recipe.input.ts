@@ -5,13 +5,13 @@ import { IsOptional, Length, MaxLength } from 'class-validator';
 export class NewRecipeInput {
 	@Field()
 	@MaxLength(30)
-	title: string;
+		title: string;
 
 	@Field({ nullable: true })
 	@IsOptional()
 	@Length(30, 255)
-	description?: string;
+		description?: string;
 
 	@Field(() => [String])
-	ingredients: string[];
+		ingredients: string[];
 }

@@ -1,19 +1,22 @@
+import { graphqlFieldDeal } from '@/middlewares';
 import { Directive, Field, ID, ObjectType } from '@nestjs/graphql';
 
-@ObjectType({ description: 'recipe ' })
+@ObjectType({ description: 'recipe' })
 export class Recipe {
-  @Field(type => ID)
-  	id: string;
+	@Field(() => ID)
+		id: string;
 
-  @Directive('@upper')
-  	title: string;
+	// Directive和Field顺序可随意
+	@Directive('@upper')
+	@Field({ middleware: [graphqlFieldDeal] })
+		title: string;
 
-  @Field({ nullable: true })
-  	description?: string;
+	@Field({ nullable: true })
+		description?: string;
 
-  @Field()
-  	creationDate: Date;
+	@Field()
+		creationDate: Date;
 
-  @Field(type => [String])
-  	ingredients: string[];
+	@Field(() => [String])
+		ingredients: string[];
 }

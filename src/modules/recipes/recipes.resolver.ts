@@ -9,6 +9,13 @@ import { RecipesService } from './recipes.service';
 
 const pubSub = new PubSub();
 
+pubSub.subscribe('recipeAdded', res => {
+	if (!global.arr) {
+		global.arr = [];
+	}
+	global.arr.push(res.recipeAdded);
+});
+
 @Resolver(() => Recipe)
 export class RecipesResolver {
 	constructor(private readonly recipesService: RecipesService) { }
