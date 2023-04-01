@@ -7,6 +7,8 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { DirectiveLocation, GraphQLDirective } from 'graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { upperDirectiveTransformer } from './common/directives/upper-case.directive';
+import { TraceLoggingPlugin, ComplexityPlugin, CatchPluginError } from './common/plugins';
+import { system } from '@/configs';
 
 /**
  * graphql数据后置处理的顺序
@@ -16,21 +18,27 @@ import { upperDirectiveTransformer } from './common/directives/upper-case.direct
 
 @Module({
 	imports: [
-		GraphQLModule.forRoot<ApolloDriverConfig>({
+		GraphQLModule.forRootAsync<ApolloDriverConfig>({
 			driver: ApolloDriver,
-			autoSchemaFile: true,
-			transformSchema: schema => upperDirectiveTransformer(schema, 'upper'),
-			installSubscriptionHandlers: true, // 开启subscription功能
-			buildSchemaOptions: {
-				directives: [
-					new GraphQLDirective({
-						name: 'upper',
-						locations: [DirectiveLocation.FIELD_DEFINITION]
-					})
-				]
+			useFactory: () => {
+				return {
+					logger: system('apollo'),
+					path: process.env.GQL_Path,
+					autoSchemaFile: true,
+					transformSchema: schema => upperDirectiveTransformer(schema, 'upper'),
+					installSubscriptionHandlers: true, // 开启subscription功能
+					buildSchemaOptions: {
+						directives: [
+							new GraphQLDirective({
+								name: 'upper',
+								locations: [DirectiveLocation.FIELD_DEFINITION]
+							})
+						]
+					}
+				};
 			}
 		})
 	],
-	providers: [RecipesResolver, RecipesService, DateScalar]
+	providers: [RecipesResolver, RecipesService, DateScalar, CatchPluginError, TraceLoggingPlugin, ComplexityPlugin]
 })
 export class RecipesModule { }

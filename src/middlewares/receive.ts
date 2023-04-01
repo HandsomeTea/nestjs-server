@@ -15,6 +15,16 @@ const filteNotAllown = (str?: string): string | void => {
  * 服务器接收到请求的相关处理
  */
 export default (req: Request, _res: Response, next: NextFunction): void => {
+	httpContext.set('traceId', filteNotAllown(req.get('x-b3-traceid')) || traceId());
+	httpContext.set('parentSpanId', filteNotAllown(req.get('x-b3-parentspanid')) || '');
+	httpContext.set('spanId', filteNotAllown(req.get('x-b3-spanid')) || traceId());
+
+	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+	// @ts-ignore
+	if (req._parsedUrl.pathname === process.env.GQL_Path) {
+		return next();
+	}
+
 	let _datas = `\nheader: ${JSON.stringify(req.headers, null, '   ')}`;
 
 	if (req.body && Object.getOwnPropertyNames(req.body).length > 0) {
@@ -27,16 +37,13 @@ export default (req: Request, _res: Response, next: NextFunction): void => {
 		_datas += `\nparams: ${JSON.stringify(req.params, null, '   ')}`;
 	}
 
-	httpContext.set('traceId', filteNotAllown(req.get('x-b3-traceid')) || traceId());
-	httpContext.set('parentSpanId', filteNotAllown(req.get('x-b3-parentspanid')) || '');
-	httpContext.set('spanId', filteNotAllown(req.get('x-b3-spanid')) || traceId());
 	trace(
 		{
 			traceId: httpContext.get('traceId'),
 			spanId: httpContext.get('spanId'),
 			parentSpanId: httpContext.get('parentSpanId')
 		},
-		'receive-request'
+		'http-request'
 	).info(`${req.method}: ${req.originalUrl} ${_datas}`);
 
 	next();

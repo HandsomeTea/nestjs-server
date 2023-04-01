@@ -15,28 +15,20 @@ export default class TransformResponse implements NestInterceptor {
 
 		return next.handle().pipe(
 			map(data => {
-				let request: Request = null;
-
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
-				if (ctx.contextType === 'graphql') {
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
-					request = ctx.args[2].req;
-				} else {
-					request = ctx.getRequest<Request>();
-				}
+				if (ctx.contextType === 'http') {
+					const request = ctx.getRequest<Request>();
 
-				trace(
-					{
-						traceId: httpContext.get('traceId'),
-						spanId: httpContext.get('spanId'),
-						parentSpanId: httpContext.get('parentSpanId')
-					},
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
-					`${ctx.contextType}-response`
-				).info(`${request.method}: ${request.originalUrl} => \n${JSON.stringify(data, null, '   ')}`);
+					trace(
+						{
+							traceId: httpContext.get('traceId'),
+							spanId: httpContext.get('spanId'),
+							parentSpanId: httpContext.get('parentSpanId')
+						},
+						'http-response'
+					).info(`${request.method}: ${request.originalUrl} => \n${JSON.stringify(data, null, '   ')}`);
+				}
 
 				return data;
 			})
