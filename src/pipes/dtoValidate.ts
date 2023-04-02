@@ -1,7 +1,7 @@
 import { PipeTransform, Injectable, ArgumentMetadata } from '@nestjs/common';
 import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
-import { Exception, HttpError, log } from '@/configs';
+import { Exception, ErrorCode, log } from '@/configs';
 
 @Injectable()
 export class ValidationDtoPipe implements PipeTransform {
@@ -25,7 +25,7 @@ export class ValidationDtoPipe implements PipeTransform {
 			const msg = errors.map(a => Object.values(a.constraints).join(',')).join(',');
 
 			log(metadata.metatype.name).error(errors);
-			throw new Exception(msg, HttpError.INVALID_DATA_RATE);
+			throw new Exception(msg, ErrorCode.INVALID_DATA_RATE);
 		}
 		return value;
 	}

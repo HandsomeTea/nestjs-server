@@ -1,7 +1,7 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable/*, HttpStatus*/ } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-// import { HttpError, Exception } from '@/configs';
+// import { ErrorCode, Exception } from '@/configs';
 import { UserDal } from '@/dal';
 
 @Injectable()
@@ -14,8 +14,8 @@ export class UserService {
 
 	async findAll() {
 		// return process.env.PORT;
-		// throw new Exception('cuo le', HttpError.BE_LOGOUT);
-		// throw new Exception('cuo le', HttpStatus.BAD_GATEWAY, ['213123221']);
+		// throw new Exception('cuo le', ErrorCode.BE_LOGOUT);
+		// throw new Exception('cuo le', HttpStatus.BAD_GATEWAY, { userid: '213123221' });
 		return await this.user.find();
 	}
 

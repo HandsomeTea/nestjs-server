@@ -4,11 +4,11 @@ import { RecipesResolver } from './recipes.resolver';
 import { RecipesService } from './recipes.service';
 
 import { GraphQLModule } from '@nestjs/graphql';
-import { DirectiveLocation, GraphQLDirective } from 'graphql';
+import { DirectiveLocation, GraphQLDirective, GraphQLError, GraphQLFormattedError } from 'graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { upperDirectiveTransformer } from './common/directives/upper-case.directive';
-import { TraceLoggingPlugin, ComplexityPlugin, CatchPluginError } from './common/plugins';
-import { system } from '@/configs';
+import { TraceLoggingPlugin, ComplexityPlugin } from './common/plugins';
+import { log, system } from '@/configs';
 
 /**
  * graphql数据后置处理的顺序
@@ -34,11 +34,15 @@ import { system } from '@/configs';
 								locations: [DirectiveLocation.FIELD_DEFINITION]
 							})
 						]
+					},
+					formatError: (formattedError: GraphQLFormattedError, error: GraphQLError): GraphQLFormattedError => {
+						log('apollo-unexpected-error').error(`${error.path.join(',')}: ${error.message} \n${JSON.stringify(formattedError, null, '   ')}`);
+						return error;
 					}
 				};
 			}
 		})
 	],
-	providers: [RecipesResolver, RecipesService, DateScalar, CatchPluginError, TraceLoggingPlugin, ComplexityPlugin]
+	providers: [RecipesResolver, RecipesService, DateScalar, TraceLoggingPlugin, ComplexityPlugin]
 })
 export class RecipesModule { }

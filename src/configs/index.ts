@@ -1,5 +1,5 @@
-import { HttpError } from './errorCode';
-import Exception from './exception';
+import { ErrorCode } from './errorCode';
 
+export { Exception, GqlException } from './exception';
 export { trace, traceId, log, audit, system, updateOrCreateLogInstance } from './logger';
-export { HttpError, Exception };
+export { ErrorCode };

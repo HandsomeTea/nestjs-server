@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+// import { GqlException, ErrorCode } from '@/configs';
 import { NewRecipeInput } from './dto/new-recipe.input';
 import { RecipesArgs } from './dto/recipes.args';
 import { Recipe } from './models/recipe.model';
@@ -12,6 +13,7 @@ export class RecipesService {
    */
 
 	async create(data: NewRecipeInput): Promise<Recipe> {
+		// throw new GqlException('Invalid argument value', ErrorCode.INVALID_DATA_RATE);
 		return {
 			id: new Date().getTime() + '',
 			creationDate: new Date(),

@@ -8,8 +8,8 @@ export const HttpErrorType = {
  */
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-export const HttpError: Record<keyof typeof HttpErrorType, keyof typeof HttpErrorType> = {} as const;
+export const ErrorCode: Record<keyof typeof HttpErrorType, keyof typeof HttpErrorType> = {} as const;
 
 for (const key in HttpErrorType) {
-	HttpError[key] = key;
+	ErrorCode[key] = key;
 }

@@ -20,26 +20,30 @@ export class TraceLoggingPlugin implements ApolloServerPlugin<DT> {
 			async willSendResponse(reqContext: GraphQLRequestContextWillSendResponse<DT>) {
 				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 				// @ts-ignore
-				// const orgData = (reqContext.response.body.singleResult || reqContext.response.body.subsequentResults || reqContext.response.body.initialResult).data;
-				// const key = Object.getOwnPropertyNames(orgData)[0];
-				// const data = Object.getOwnPropertyDescriptors(orgData[key]);
-				// const obj = {
-				// 	[`${key}`]: {}
-				// };
-
-				// for (const k in data) {
-				// 	obj[`${key}`][`${k}`] = data[k].value;
-				// }
-				trace(
+				const orgData = (reqContext.response.body.singleResult || reqContext.response.body.subsequentResults || reqContext.response.body.initialResult).data;
+				const logger = trace(
 					{
 						traceId: httpContext.get('traceId'),
 						spanId: httpContext.get('spanId'),
 						parentSpanId: httpContext.get('parentSpanId')
 					},
 					'apollo-response'
-					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-					// @ts-ignore
-				).info((reqContext.response.body.singleResult || reqContext.response.body.subsequentResults || reqContext.response.body.initialResult).data);
+				);
+
+				if (orgData) {
+					const key = Object.getOwnPropertyNames(orgData)[0];
+					const data = Object.getOwnPropertyDescriptors(orgData[key]);
+					const obj = {
+						[`${key}`]: {}
+					};
+
+					for (const k in data) {
+						obj[`${key}`][`${k}`] = data[k].value;
+					}
+					logger.info(`${key} => \n${JSON.stringify(obj[key], null, '   ')}`);
+				} else {
+					logger.info(orgData);
+				}
 			}
 		};
 	}
