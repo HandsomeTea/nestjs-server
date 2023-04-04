@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { V1AppModule } from '@/modules';
+import { MasterModule } from '@/modules';
 import { ConfigModule } from '@nestjs/config';
 
 describe('v1 (e2e)', () => {
@@ -15,7 +15,7 @@ describe('v1 (e2e)', () => {
 				ConfigModule.forRoot({
 					envFilePath: ['.env.local']
 				}),
-				V1AppModule
+				MasterModule
 			]
 		}).compile();
 

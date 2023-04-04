@@ -1,7 +1,12 @@
 import { CustomScalar, Scalar } from '@nestjs/graphql';
 import { Kind, ValueNode } from 'graphql';
 
-@Scalar('Date', type => Date)
+/**
+ * 标量的作用，可理解为，为graphql的model定义一个新的类型
+ * 比如定义一个新的数据类型testDate
+*/
+
+@Scalar('Date', () => Date)
 export class DateScalar implements CustomScalar<number, Date> {
 	description = 'Date custom scalar type';
 

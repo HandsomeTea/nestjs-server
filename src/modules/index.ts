@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { HealthModule } from './health/health.module';
-import { UserModule } from './user/user.module';
-import { RecipesModule } from './recipes/recipes.module';
+import { V1AppModule } from './v1';
 
 @Module({
 	imports: [
@@ -12,10 +11,7 @@ import { RecipesModule } from './recipes/recipes.module';
 		}),
 		// 健康检查模块
 		HealthModule,
-		// rest api示例模块
-		UserModule,
-		// graphql示例模块
-		RecipesModule
+		V1AppModule
 	]
 })
-export class V1AppModule { }
+export class MasterModule { }

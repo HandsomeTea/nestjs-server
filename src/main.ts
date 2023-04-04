@@ -7,7 +7,7 @@ import { NestFactory } from '@nestjs/core';
 import * as httpContext from 'express-http-context';
 import * as compression from 'compression';
 // import * as csurf from 'csurf';
-import { V1AppModule } from '@/modules';
+import { MasterModule } from '@/modules';
 import { requestHandle } from '@/middlewares';
 import { ResponseHandle /*, TestInterceptor*/ } from '@/interceptors';
 import { ErrorHandle } from '@/filters';
@@ -18,7 +18,7 @@ import { updateOrCreateLogInstance, system } from '@/configs';
 (async () => {
 	updateOrCreateLogInstance(); // 日志初始化
 
-	const app = await NestFactory.create(V1AppModule, {
+	const app = await NestFactory.create(MasterModule, {
 		logger: system('nestjs')
 	});
 
