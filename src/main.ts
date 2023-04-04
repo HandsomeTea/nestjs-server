@@ -28,7 +28,7 @@ import { updateOrCreateLogInstance, system } from '@/configs';
 	 */
 
 	app.enableCors();
-	app.setGlobalPrefix('api/v1');
+	app.setGlobalPrefix('api');
 
 	/** 全局错误捕获 */
 	app.useGlobalFilters(new ErrorHandle());

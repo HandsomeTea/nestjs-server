@@ -20,7 +20,7 @@ describe('v1 (e2e)', () => {
 		}).compile();
 
 		app = moduleFixture.createNestApplication();
-		app.setGlobalPrefix('api/v1');
+		app.setGlobalPrefix('api');
 		await app.init();
 	});
 
