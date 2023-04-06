@@ -2,10 +2,9 @@ import { UserModel, MongoHas } from '@/db/db.interfaces';
 import { Injectable } from '@nestjs/common';
 import Redis from 'ioredis';
 import { InjectRedisClient } from 'nestjs-ioredis';
-import { CacheServer } from './cache.interfaces';
 
 @Injectable()
-export class CacheService implements CacheServer {
+export class CacheService {
 	// 也可以注入别的缓存服务
 	constructor(@InjectRedisClient('test') private server: Redis) { }
 

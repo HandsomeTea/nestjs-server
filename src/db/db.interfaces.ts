@@ -15,8 +15,8 @@ export type UserData = {
 	name: string;
 }
 
-// export type UserModel = Readonly<MongoHas & UserData>
-export type UserModel = Readonly<SqlHas & UserData>
+export type UserModel = Readonly<MongoHas & UserData>
+// export type UserModel = Readonly<SqlHas & UserData>
 
 
 export type KeysOf<T> = { [P in keyof T]?: T[P] | unknown };
