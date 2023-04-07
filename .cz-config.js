@@ -88,9 +88,9 @@ module.exports = {
         scope: '此次变更的影响范围:',
         // 选择 scope: custom 时会出下面的提示
         customScope: '(可选项)请输入此次变更的影响范围:',
-        subject: '请输入此次变更的简述:',
+        subject: '请输入此次变更的简述(标题):',
         // 关联breaklineChar
-        body: '(可选项)请输入更加详细的描述, 如新增功能/bug链接/截图链接等, 使用"|"换行:\n',
+        body: '(可选项)请输入更加详细的描述(正文), 如新增功能/bug链接/截图链接等, 使用"|"换行:\n',
         breaking: '(可选项)请输入非兼容性重大的变更:',
         // 关联footerPrefix，breaklineChar
         footer: '(可选项)请输入此次变更涉及的已关闭的issue编号, 如: #31, #34, 使用"|"换行:\n',
