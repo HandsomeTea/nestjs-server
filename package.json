@@ -17,7 +17,8 @@
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
         "test:e2e": "jest --config ./test/jest-e2e.json",
         "create": "nest g",
-        "struct": "npx @compodoc/compodoc -p tsconfig.json -s"
+        "struct": "npx @compodoc/compodoc -p tsconfig.json -s",
+        "commit": "./node_modules/cz-customizable/standalone.js"
     },
     "repository": {
         "type": "git",
@@ -68,6 +69,8 @@
         "@types/supertest": "^2.0.11",
         "@typescript-eslint/eslint-plugin": "^5.0.0",
         "@typescript-eslint/parser": "^5.0.0",
+        "commitizen": "^4.3.0",
+        "cz-customizable": "^7.0.0",
         "eslint": "^8.0.1",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-prettier": "^4.0.0",
@@ -80,6 +83,11 @@
         "ts-node": "^10.0.0",
         "tsconfig-paths": "4.1.1",
         "typescript": "^4.7.4"
+    },
+    "config": {
+        "commitizen": {
+            "path": "node_modules/cz-customizable"
+        }
     },
     "jest": {
         "moduleFileExtensions": [

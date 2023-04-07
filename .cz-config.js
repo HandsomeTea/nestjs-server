@@ -35,8 +35,15 @@ module.exports = {
     }, {
         value: 'WIP',
         name: '正在进行'
-    }],
-    // scope 类型，针对 React 项目
+    }].map(a => {
+        a.name = `  ${a.name}`
+        return a;
+    }),
+    /** 自定义scope
+     * 方法1：allowCustomScopes设置为true，会自动添加两个 scope 类型 [{ name: 'empty', value: false },{ name: 'custom', value: 'custom' }]
+     * 方法2：在scopes项中添加value为custom的选项
+     */
+    // allowCustomScopes: true,
     scopes: [
         ['components', '组件相关'],
         ['hooks', 'hook 相关'],
@@ -49,11 +56,12 @@ module.exports = {
         ['auth', '对 auth 修改'],
         ['other', '其他修改'],
         // 如果选择 custom ,后面会让你再输入一个自定义的 scope , 也可以不设置此项， 把后面的 allowCustomScopes 设置为 true
-        ['custom', '以上都不是？我要自定义'],
+        // ['custom', '自定义'],
     ].map(([value, description]) => {
         return {
             value,
-            name: `${value.padEnd(30)} (${description})`
+            // name: `${value.padEnd(30)} (${description})`
+            name: `${value}:${description}`
         };
     }),
 
@@ -75,26 +83,27 @@ module.exports = {
      */
     // 覆写提示的信息
     messages: {
-        type: "请确保你的提交遵循了原子提交规范！\n选择你要提交的类型:",
-        scope: '\n选择一个 scope (可选):',
+        type: "确保你的提交遵循了原子提交规范! 此次提交的变更属于:",
+        // 如果自定义scope，可不选
+        scope: '此次变更的影响范围:',
         // 选择 scope: custom 时会出下面的提示
-        customScope: '请输入自定义的 scope:',
-        subject: '填写一个简短精炼的描述语句:\n',
-        body: '添加一个更加详细的描述，可以附上新增功能的描述或 bug 链接、截图链接 (可选)。使用 "|" 换行:\n',
-        breaking: '列举非兼容性重大的变更 (可选):\n',
-        footer: '列举出所有变更的 ISSUES CLOSED  (可选)。 例如.: #31, #34:\n',
+        customScope: '(可选项)请输入此次变更的影响范围:',
+        subject: '请输入此次变更的简述:',
+        // 关联breaklineChar
+        body: '(可选项)请输入更加详细的描述, 如新增功能/bug链接/截图链接等, 使用"|"换行:\n',
+        breaking: '(可选项)请输入非兼容性重大的变更:',
+        // 关联footerPrefix，breaklineChar
+        footer: '(可选项)请输入此次变更涉及的已关闭的issue编号, 如: #31, #34, 使用"|"换行:\n:',
         confirmCommit: '确认提交?',
     },
 
-    // 是否允许自定义填写 scope ，设置为 true ，会自动添加两个 scope 类型 [{ name: 'empty', value: false },{ name: 'custom', value: 'custom' }]
-    // allowCustomScopes: true,
     allowBreakingChanges: ['feat', 'fix'],
     // skip any questions you want
-    // skipQuestions: [],
+    skipQuestions: ['breaking'],
 
     // subject 限制长度
     subjectLimit: 100,
-    // breaklineChar: '|', // 支持 body 和 footer
-    // footerPrefix : 'ISSUES CLOSED:'
+    breaklineChar: '|', // 支持 body 和 footer
+    footerPrefix: 'ISSUES CLOSED:'
     // askForBreakingChangeFirst : true,
 };
