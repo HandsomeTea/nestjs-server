@@ -1,37 +1,40 @@
 module.exports = {
     types: [{
         value: 'feat',
-        name: '✨ 新增产品功能'
+        name: '增加新功能'
     }, {
         value: 'fix',
-        name: '  修复 bug'
+        name: '修复bug'
     }, {
         value: 'docs',
-        name: '  文档的变更'
+        name: '变更文档'
     }, {
         value: 'style',
-        name: '  不改变代码功能的变动(如删除空格、格式化、去掉末尾分号等)',
+        name: '变动代码格式(删除空格/格式化/去掉末尾分号等)',
     }, {
         value: 'refactor',
-        name: '♻ 重构代码。不包括 bug 修复、功能新增',
+        name: '重构代码(不包括bug修复/功能新增)',
     }, {
         value: 'perf',
-        name: '⚡ 性能优化',
+        name: '性能优化',
     }, {
         value: 'test',
-        name: '✅ 添加、修改测试用例'
+        name: '添加/修改测试用例'
     }, {
         value: 'build',
-        name: ' • 构建流程、外部依赖变更，比如升级 npm 包、修改 webpack 配置'
+        name: '变更构建流程/外部依赖(升级npm包/修改webpack配置/修改开发配置等)'
     }, {
         value: 'ci',
-        name: '  修改了 CI 配置、脚本'
+        name: '修改CI配置/脚本'
     }, {
         value: 'chore',
-        name: '对构建过程或辅助工具和库的更改,不影响源文件、测试用例的其他操作',
+        name: '更改构建过程/辅助工具/库(不影响源文件/测试用例等其他操作)',
     }, {
         value: 'revert',
-        name: '⏪ 回滚 commit'
+        name: '回滚'
+    }, {
+        value: 'WIP',
+        name: '正在进行'
     }],
     // scope 类型，针对 React 项目
     scopes: [
@@ -94,4 +97,4 @@ module.exports = {
     // breaklineChar: '|', // 支持 body 和 footer
     // footerPrefix : 'ISSUES CLOSED:'
     // askForBreakingChangeFirst : true,
-}
+};
