@@ -93,7 +93,7 @@ module.exports = {
         body: '(可选项)请输入更加详细的描述, 如新增功能/bug链接/截图链接等, 使用"|"换行:\n',
         breaking: '(可选项)请输入非兼容性重大的变更:',
         // 关联footerPrefix，breaklineChar
-        footer: '(可选项)请输入此次变更涉及的已关闭的issue编号, 如: #31, #34, 使用"|"换行:\n:',
+        footer: '(可选项)请输入此次变更涉及的已关闭的issue编号, 如: #31, #34, 使用"|"换行:\n',
         confirmCommit: '确认提交?',
     },
 
