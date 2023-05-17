@@ -16,7 +16,7 @@ import { MongoHas } from '@/db/db.interfaces';
 
 type Mongo<T> = Readonly<MongoHas & T>
 
-export default class MongoBase<CM> {
+export default abstract class MongoBase<CM> {
 	protected collectionName: string;
 	private schema: Schema<CM>;
 	private index: Array<{ fields: IndexDefinition; options?: IndexOptions }> | undefined;
