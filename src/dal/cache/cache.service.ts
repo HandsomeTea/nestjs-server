@@ -1,12 +1,12 @@
 import { UserModel, MongoHas } from '@/db/db.interfaces';
 import { Injectable } from '@nestjs/common';
 import Redis from 'ioredis';
-import { InjectRedisClient } from 'nestjs-ioredis';
+import { InjectRedis } from '@svtslv/nestjs-ioredis';
 
 @Injectable()
 export class CacheService {
 	// 也可以注入别的缓存服务
-	constructor(@InjectRedisClient('test') private server: Redis) { }
+	constructor(@InjectRedis() private server: Redis) { }
 
 	private cacheUserKey(userId: string): string {
 		return `user:id_${userId}`;

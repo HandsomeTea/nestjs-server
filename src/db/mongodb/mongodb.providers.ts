@@ -6,7 +6,7 @@ export const dbConnectProvider = {
 	provide: 'MONGODB_CONNECTION',
 	useFactory: async (): Promise<typeof mongoose> => {
 		mongoose.connection
-			.once('connected', () => {
+			.on('connected', () => {
 				system('mongodb').info(`mongodb connected on ${process.env.DB_URL} success and ready to use.`);
 			})
 			.on('disconnected', () => {

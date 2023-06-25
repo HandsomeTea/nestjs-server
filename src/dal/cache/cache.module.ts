@@ -1,20 +1,20 @@
 import { Module } from '@nestjs/common';
-import { RedisModule } from 'nestjs-ioredis';
+import { RedisModule } from '@svtslv/nestjs-ioredis';
 import { cacheProvider } from './cache.providers';
 
 @Module({
 	imports: [
-		RedisModule.forAsync({ name: 'test' }, {
+		RedisModule.forRootAsync({
 			useFactory: () => {
 				const { hostname, port, password } = new URL(process.env.REDIS_URL);
 
-				return [
-					{
+				return {
+					config: {
 						host: hostname,
 						port: parseInt(port),
 						password
 					}
-				];
+				};
 			}
 		})
 	],
