@@ -1,8 +1,7 @@
 import { BulkCreateOptions, CountOptions, CreateOptions, CreationAttributes, DestroyOptions, FindAndCountOptions, FindOptions, Identifier, QueryTypes, UpdateOptions } from 'sequelize';
 import { Model } from 'sequelize-typescript';
-import { SqlHas } from '@/db/db.interfaces';
 
-type Sql<T> = Readonly<SqlHas & T>
+type Sql<T> = T & { createdAt: Date, updatedAt: Date }
 
 export default class SequelizeBase<TM> extends Model<TM> {
 	private modelName: string;

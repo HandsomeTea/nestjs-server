@@ -1,0 +1,51 @@
+{
+    "apps": [
+        {
+            "name": "nestjs server",
+            "script": "node main.js",
+            "args": "",
+            "env_development": {
+                "SERVER_NAME": "nestjs server",
+                "PORT": 3003,
+                "NODE_ENV": "development",
+                "LOG_LEVEL": "all",
+                "TRACE_LOG_LEVEL": "all",
+                "DEV_LOG_LEVEL": "all",
+                "AUDIT_LOG_LEVEL": "all",
+                "JWT_ISSURE": "coco",
+                "JWT_SUBJECT": "coco-project",
+                "JWT_SECRET": "coco",
+                "DB_URL": "mongodb://mongouser:Cenbocemeta123@172.21.48.15:27017,172.21.48.13:27017/cemeta-test?replicaSet=cmgo-4ar7lj41_0&authSource=admin",
+                "MESSAGE_SERVER_ADDR": "http://localhost:3001/api/cemetamgr/message"
+            },
+            "env_test": {
+                "SERVER_NAME": "nestjs server",
+                "PORT": 3003,
+                "NODE_ENV": "test",
+                "LOG_LEVEL": "all",
+                "TRACE_LOG_LEVEL": "all",
+                "DEV_LOG_LEVEL": "all",
+                "AUDIT_LOG_LEVEL": "all",
+                "JWT_ISSURE": "coco",
+                "JWT_SUBJECT": "coco-project",
+                "JWT_SECRET": "coco",
+                "DB_URL": "mongodb://mongouser:Cenbocemeta123@172.21.48.15:27017,172.21.48.13:27017/cemeta-test?replicaSet=cmgo-4ar7lj41_0&authSource=admin",
+                "MESSAGE_SERVER_ADDR": "http://localhost:3001/api/cemetamgr/message"
+            },
+            "env_production": {
+                "SERVER_NAME": "nestjs server",
+                "PORT": 3003,
+                "NODE_ENV": "production",
+                "LOG_LEVEL": "all",
+                "TRACE_LOG_LEVEL": "all",
+                "DEV_LOG_LEVEL": "all",
+                "AUDIT_LOG_LEVEL": "all",
+                "JWT_ISSURE": "coco",
+                "JWT_SUBJECT": "coco-project",
+                "JWT_SECRET": "coco",
+                "DB_URL": "mongodb://mongouser:Cenbocemeta123@172.21.48.15:27017,172.21.48.13:27017/cemeta-test?replicaSet=cmgo-4ar7lj41_0&authSource=admin",
+                "MESSAGE_SERVER_ADDR": "http://localhost:3001/api/cemetamgr/message"
+            }
+        }
+    ]
+}

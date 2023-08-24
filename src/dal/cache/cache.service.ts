@@ -1,4 +1,3 @@
-import { UserModel, MongoHas } from '@/db/db.interfaces';
 import { Injectable } from '@nestjs/common';
 import Redis from 'ioredis';
 import { InjectRedis } from '@svtslv/nestjs-ioredis';
@@ -12,7 +11,7 @@ export class CacheService {
 		return `user:id_${userId}`;
 	}
 
-	async setUserById(user: UserModel & MongoHas): Promise<void> {
+	async setUserById(user: UserModel): Promise<void> {
 		await this.server.set(this.cacheUserKey(user._id.toString()), JSON.stringify(user), 'EX', Math.floor(Math.random() * 11 + 50) * 60); //秒为单位
 	}
 

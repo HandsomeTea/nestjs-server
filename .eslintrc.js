@@ -13,7 +13,11 @@ module.exports = {
     root: true,
     env: {
         node: true,
-        jest: true,
+        jest: true
+    },
+    globals: {
+        ExceptionInstance: true,
+        UserModel: true
     },
     rules: {
         'prettier/prettier': 'off',

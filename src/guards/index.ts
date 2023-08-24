@@ -1,4 +1,5 @@
 // 守卫通常用来处理权限控制相关的检查
-import JWTCheckHandle from './jwtCheck';
+import UserCheckHandle from './userCheck';
+import ServerCheckHandle from './serverCheck';
 
-export { JWTCheckHandle };
+export { UserCheckHandle, ServerCheckHandle };

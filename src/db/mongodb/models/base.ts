@@ -7,23 +7,22 @@ import {
 	QueryOptions,
 	UpdateQuery,
 	UpdateWithAggregationPipeline,
-	SortOrder
+	SortOrder,
+	Types
 } from 'mongoose';
 import { ObjectId } from 'bson';
 import * as mongoose from 'mongoose';
-import { MongoHas } from '@/db/db.interfaces';
 
-
-type Mongo<T> = Readonly<MongoHas & T>
+type Mongo<T> = T & { _id: Types.ObjectId, createdAt: Date, updatedAt: Date }
 
 export default abstract class MongoBase<CM> {
 	protected collectionName: string;
-	private schema: Schema<CM>;
+	private schema: Schema<Omit<CM, '_id' | 'createdAt' | 'updatedAt'>>;
 	private index: Array<{ fields: IndexDefinition; options?: IndexOptions }> | undefined;
 
 	protected constructor(
 		collectionName: string,
-		schema: Schema<CM>,
+		schema: Schema<Omit<CM, '_id' | 'createdAt' | 'updatedAt'>>,
 		index?: Array<{ fields: IndexDefinition; options?: IndexOptions }>
 	) {
 		this.collectionName = collectionName;
@@ -31,7 +30,7 @@ export default abstract class MongoBase<CM> {
 		this.index = index;
 	}
 
-	private get model(): Model<CM> {
+	private get model(): Model<Omit<CM, '_id' | 'createdAt' | 'updatedAt'>> {
 		this.schema.set('timestamps', {
 			createdAt: true,
 			updatedAt: true
@@ -43,17 +42,15 @@ export default abstract class MongoBase<CM> {
 				this.schema.index(this.index[s].fields, this.index[s].options);
 			}
 		}
-		return mongoose.connection.model<CM>(this.collectionName, this.schema, this.collectionName);
+		return mongoose.connection.model<Omit<CM, '_id' | 'createdAt' | 'updatedAt'>>(this.collectionName, this.schema, this.collectionName);
 	}
 
-	async insertOne(data: CM): Promise<Mongo<CM>> {
-		return (await new this.model(data).save()).toObject();
+	async insertOne(data: Omit<CM, '_id' | 'createdAt' | 'updatedAt'>): Promise<Mongo<CM>> {
+		return await new this.model(data).save() as unknown as Mongo<CM>;
 	}
 
-	async insertMany(data: Array<CM>): Promise<Array<Mongo<CM>>> {
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-ignore
-		return await this.model.insertMany(data, { lean: true });
+	async insertMany(data: Array<Omit<CM, '_id' | 'createdAt' | 'updatedAt'>>): Promise<Array<Mongo<CM>>> {
+		return await this.model.insertMany(data, { lean: true }) as unknown as Array<Mongo<CM>>;
 	}
 
 	async deleteOne(query: FilterQuery<Mongo<CM>>, options?: QueryOptions<Mongo<CM>>): Promise<{ acknowledged: boolean; deletedCount: number }> {
@@ -98,6 +95,10 @@ export default abstract class MongoBase<CM> {
 
 	async findById(_id: string, options?: QueryOptions<Mongo<CM>>): Promise<null | Mongo<CM>> {
 		return await this.model.findById(_id, null, options).lean();
+	}
+
+	async findOneAndUpdate(query: FilterQuery<Mongo<CM>>, update: UpdateQuery<Mongo<CM>>, options?: QueryOptions<Mongo<CM>>) {
+		return await this.model.findOneAndUpdate(query, update, { ...options || {}, new: true }).lean();
 	}
 
 	async paging<K extends keyof CM>(query: FilterQuery<Mongo<CM>>, limit: number, skip: number, sort?: Record<K, 'asc' | 'desc' | 'ascending' | 'descending'>, options?: QueryOptions<Mongo<CM>>) {

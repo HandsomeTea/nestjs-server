@@ -1,4 +1,4 @@
-import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common';
+import { ExceptionFilter, Catch, ArgumentsHost, HttpException } from '@nestjs/common';
 import { Response, Request } from 'express';
 import * as httpContext from 'express-http-context';
 import { Exception, trace } from '@/configs';
@@ -11,14 +11,22 @@ export default class HttpExceptionFilter implements ExceptionFilter {
 		const request = ctx.getRequest<Request>();
 
 		if (request) {
-			const status = exception.getStatus();
-			const result = {
-				message: exception.message,
-				code: exception.code || HttpStatus[status],
+			const errorResponse = exception.getResponse();
+			const result: ExceptionInstance = {
+				status: exception.getStatus(),
+				message: '',
+				code: exception.code || 'INTERNAL_SERVER_ERROR',
 				reason: exception.reason || {},
-				source: exception.source || [process.env.SERVER_NAME]
+				source: [...new Set([...exception.source || [], process.env.SERVER_NAME])]
 			};
 
+			if (typeof errorResponse === 'string') {
+				result.message = errorResponse;
+			} else {
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				result.message = errorResponse.message;
+			}
 			trace(
 				{
 					traceId: httpContext.get('traceId'),
@@ -29,7 +37,7 @@ export default class HttpExceptionFilter implements ExceptionFilter {
 			).info(`${request.method}: ${request.originalUrl} => \n${JSON.stringify(result, null, '   ')}`);
 			const response = ctx.getResponse<Response>();
 
-			response.status(status).json(result);
+			response.status(result.status).json(result);
 		}
 	}
 }

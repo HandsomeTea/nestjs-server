@@ -1,0 +1,42 @@
+name: user-manager:test
+
+on:
+    push:
+        branches: test # test 分支提交时触发
+
+jobs:
+    build:
+        runs-on: ubuntu-latest # 运行环境
+        steps:
+            - name: 迁出代码到git临时服务器
+              uses: actions/checkout@v3
+            - name: 安装 nodejs
+              uses: actions/setup-node@v2
+              with:
+                  node-version: "18.16.0"
+            - name: 安装指定版本的npm
+              run: npm install -g npm@9.5.1
+            - name: 安装依赖
+              run: npm install
+              # working-directory: client-vue/mobile # working-directory 指定 shell 命令运行目录
+            - name: 项目打包
+              run: npm run build
+              # working-directory: client-vue/mobile
+            - name: 发布腾讯云
+              uses: cross-the-world/ssh-scp-ssh-pipelines@latest
+              with:
+                  host: ${{ secrets.SERVER_HOST }}
+                  user: ${{ secrets.SERVER_USER }}
+                  pass: ${{ secrets.SERVER_PASS }}
+                  first_ssh: |
+
+                  scp: |
+                      dist/* => /usr/src/app/cemeta-user-manager/
+                      package.json => /usr/src/app/cemeta-user-manager/
+                      package-lock.json => /usr/src/app/cemeta-user-manager/
+                      pm2-test.json => /usr/src/app/cemeta-user-manager/
+                  connect_timeout: 180s
+                  last_ssh: |
+                      cd /usr/src/app/cemeta-user-manager/
+                      npm install
+                      pm2 start pm2-test.json --env test

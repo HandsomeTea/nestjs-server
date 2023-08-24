@@ -18,6 +18,8 @@ export default (req: Request, _res: Response, next: NextFunction): void => {
 	httpContext.set('traceId', filteNotAllown(req.get('x-b3-traceid')) || traceId());
 	httpContext.set('parentSpanId', filteNotAllown(req.get('x-b3-parentspanid')) || '');
 	httpContext.set('spanId', filteNotAllown(req.get('x-b3-spanid')) || traceId());
+	httpContext.set('userId', filteNotAllown(req.get('x-user')) || '');
+	httpContext.set('token', filteNotAllown(req.get('x-auth')) || '');
 
 	// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 	// @ts-ignore

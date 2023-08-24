@@ -25,7 +25,7 @@ export class ValidationDtoPipe implements PipeTransform {
 			const msg = errors.map(a => Object.values(a.constraints).join(',')).join(',');
 
 			log(metadata.metatype.name).error(errors);
-			throw new Exception(msg, ErrorCode.INVALID_DATA_RATE);
+			throw new Exception(msg, ErrorCode.INVALID_ARGUMENTS);
 		}
 		return value;
 	}

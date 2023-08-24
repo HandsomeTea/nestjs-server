@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { User } from '@/db/db.models';
-import { KeysOf, UserData } from '@/db/db.interfaces';
 import { CacheServer } from './cache/cache.interfaces';
 
 @Injectable()
@@ -10,7 +9,7 @@ export class UserDal {
 		@Inject('USER_MODEL') private user: User
 	) { }
 
-	async insertOne(data: UserData) {
+	async insertOne(data: Omit<UserModel, '_id' | 'createdAt' | 'updatedAt'>) {
 		return await this.user.insertOne(data);
 	}
 
@@ -33,7 +32,7 @@ export class UserDal {
 		return result;
 	}
 
-	async updateOne(id: string, updateUser: KeysOf<UserData>) {
+	async updateOne(id: string, updateUser: Partial<UserModel>) {
 		return await this.user.updateOne({ _id: id }, { $set: updateUser });
 	}
 

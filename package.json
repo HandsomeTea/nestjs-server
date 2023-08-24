@@ -17,9 +17,12 @@
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
         "test:e2e": "jest --config ./test/jest-e2e.json",
         "upgrade": "./node_modules/.bin/npm-check -u",
-        "create": "nest g",
+        "prepare": "./node_modules/.bin/husky install",
+        "commit": "./node_modules/cz-customizable/standalone.js",
+        "apidoc": "./node_modules/.bin/apidoc -i ./src -o ./apidoc",
         "struct": "npx @compodoc/compodoc -p tsconfig.json -s",
-        "commit": "./node_modules/cz-customizable/standalone.js"
+        "create": "./node_modules/.bin/nest g",
+        "product": "pm2 start pm2.json --env production"
     },
     "repository": {
         "type": "git",
@@ -43,6 +46,7 @@
         "@nestjs/sequelize": "^9.0.2",
         "@nestjs/terminus": "^9.2.2",
         "@svtslv/nestjs-ioredis": "^1.0.2",
+        "agentkeepalive": "^4.5.0",
         "class-transformer": "^0.5.1",
         "class-validator": "^0.14.0",
         "compression": "^1.7.4",

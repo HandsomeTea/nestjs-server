@@ -1,0 +1,11 @@
+{
+    "name": "nestjs server",
+    "version": "1.0.0",
+    "description": "提供..模块相关的接口。",
+    "title": "..服务",
+    "url": "",
+    "sampleUrl": false,
+    "order": [
+        "Account"
+    ]
+}
