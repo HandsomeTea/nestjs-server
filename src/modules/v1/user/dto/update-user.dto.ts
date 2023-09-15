@@ -19,7 +19,7 @@ export class UpdateUserDto extends PartialType(CreateUserDto) {
 
 	readonly avatar?: string;
 
-	readonly role?: Array<'user'>;
+	readonly type?: Array<UserType>;
 
 	readonly status?: UserStatus;
 }

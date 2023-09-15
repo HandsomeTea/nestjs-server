@@ -5,7 +5,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ErrorCode, Exception } from '@/configs';
 import { UserDal, UserTokenDal } from '@/dal';
 import { ServerRequest } from '@/providers/HTTP';
-import { sha256, randomBy, displayPhone, passwordEncrypted, passwordVerify } from '@coco-sheng/js-tools';
+import { sha256, randomBy, displayPhone, passwordEncrypted, passwordVerify, isPhone, isEmail } from '@coco-sheng/js-tools';
 
 @Injectable()
 export class UserService {
@@ -13,10 +13,19 @@ export class UserService {
 		@Inject('USER_DAL') private user: UserDal,
 		@Inject('USER_TOKEN_DAL') private userToken: UserTokenDal,
 		@Inject('HTTP') private HTTP: ServerRequest
-	) { }
+	) {
+		// this.create({
+		// 	name: 'coco',
+		// 	phone: '13000000000',
+		// 	email: '13000000000@qq.com',
+		// 	password: '123456',
+		// 	type: ['user'],
+		// 	avatar: 'https://www.baidu.com/img/bd_logo1.png'
+		// });
+	}
 
 	async create(user: CreateUserDto) {
-		const { name, phone, email, password, role, avatar } = user;
+		const { name, phone, email, password, type, avatar } = user;
 
 		return await this.user.insertOne({
 			name: name || phone && displayPhone(phone) || email,
@@ -33,7 +42,7 @@ export class UserService {
 					}
 				};
 			})() : {},
-			...Array.isArray(role) && role.length > 0 ? { role: role } : { role: ['user'] },
+			...Array.isArray(type) && type.length > 0 ? { type } : { type: ['user'] },
 			...avatar ? { avatar: { url: avatar, updateAt: new Date() } } : {},
 			status: 'active'
 		});
@@ -51,7 +60,7 @@ export class UserService {
 	}
 
 	async update(id: string, updateUser: UpdateUserDto) {
-		const { name, phone, email, password, role, avatar } = updateUser;
+		const { name, phone, email, password, type, avatar } = updateUser;
 
 		return await this.user.updateOne(id, {
 			name, phone, email,
@@ -66,7 +75,7 @@ export class UserService {
 					}
 				};
 			})() : {},
-			role, avatar
+			type, avatar
 		});
 	}
 
@@ -105,14 +114,15 @@ export class UserService {
 				name: user.name || user.phone.number && displayPhone(user.phone.number) || user.email.address,
 				phone: user.phone ? { number: displayPhone(user.phone.number) as string, verify: Boolean(user.phone.verify) } : {},
 				email: user.email || {},
-				role: user.role
+				type: user.type,
+				role: user.role || []
 			}
 		};
 	}
 
 	private async loginByCode(code: string, option: { phone?: string, email?: string }) {
 		const { email, phone, type } = await this.HTTP.checkLoginCode(code, option) as unknown as { type: 'login-phone-code' | 'login-email-code', email?: string, phone?: string };
-		const createUserRole: Array<'user'> = ['user'];
+		const createUserRole: Array<UserType> = ['user'];
 
 		if (email && type === 'login-email-code') {
 			const user = await this.user.findOne({ email });
@@ -123,7 +133,7 @@ export class UserService {
 				}
 				return await this.generateLoginResult(user._id.toString());
 			} else {
-				const userId = (await this.user.create({ email }, { verify: true, role: createUserRole }))._id.toString();
+				const userId = (await this.user.create({ email }, { verify: true, type: createUserRole }))._id.toString();
 
 				return await this.generateLoginResult(userId);
 			}
@@ -137,7 +147,7 @@ export class UserService {
 				}
 				return await this.generateLoginResult(user._id.toString());
 			} else {
-				const userId = (await this.user.create({ phone }, { verify: true, role: createUserRole }))._id.toString();
+				const userId = (await this.user.create({ phone }, { verify: true, type: createUserRole }))._id.toString();
 
 				return await this.generateLoginResult(userId);
 			}
@@ -180,7 +190,10 @@ export class UserService {
 		}
 
 		if (type === 'pwd') {
-			return this.loginByPassword(password, { phone: account, email: account });
+			return this.loginByPassword(password, {
+				...isPhone(account) ? { phone: account } : {},
+				...isEmail(account) ? { email: account } : {}
+			});
 		}
 
 		if (type === 'resume') {

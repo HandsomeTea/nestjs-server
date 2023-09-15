@@ -2,6 +2,7 @@ import { PipeTransform, Injectable, ArgumentMetadata } from '@nestjs/common';
 import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 import { Exception, ErrorCode, log } from '@/configs';
+import { typeIs } from '@coco-sheng/js-tools';
 
 @Injectable()
 export class ValidationDtoPipe implements PipeTransform {
@@ -19,6 +20,10 @@ export class ValidationDtoPipe implements PipeTransform {
 		}
 		// 将对象转换为 Class 来验证
 		const object = plainToInstance(metadata.metatype, value);
+
+		if (typeIs(object) !== 'object') {
+			return value;
+		}
 		const errors = await validate(object);
 
 		if (errors.length > 0) {

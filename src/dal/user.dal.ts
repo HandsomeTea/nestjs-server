@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { User } from '@/db/db.models';
+import { Users } from '@/db/db.models';
 import { CacheServer } from './cache/cache.interfaces';
 import { displayPhone } from '@coco-sheng/js-tools';
 
@@ -7,7 +7,7 @@ import { displayPhone } from '@coco-sheng/js-tools';
 export class UserDal {
 	constructor(
 		@Inject('CACHE_MODEL') private cacheServer: CacheServer,
-		@Inject('USER_MODEL') private user: User
+		@Inject('USER_MODEL') private user: Users
 	) { }
 
 	async insertOne(data: Omit<UserModel, '_id' | 'createdAt' | 'updatedAt'>) {
@@ -33,8 +33,8 @@ export class UserDal {
 		return result;
 	}
 
-	async updateOne(id: string, updateUser: { name?: string, phone?: string, email?: string, password?: UserModel['password'], role?: Array<string>, avatar?: string }) {
-		const { name, phone, email, password, role, avatar } = updateUser;
+	async updateOne(id: string, update: { name?: string, phone?: string, email?: string, password?: UserModel['password'], type?: Array<UserType>, avatar?: string }) {
+		const { name, phone, email, password, type, avatar } = update;
 
 		return await this.user.updateOne({ _id: id }, {
 			$set: {
@@ -42,7 +42,7 @@ export class UserDal {
 				...phone ? { 'phone.number': phone } : {},
 				...email ? { 'email.address': email } : {},
 				...password ? { password } : {},
-				...Array.isArray(role) && role.length > 0 ? { role } : { role: ['user'] },
+				...Array.isArray(type) && type.length > 0 ? { type } : { type: ['user'] },
 				...avatar ? { avatar: { url: avatar, updateAt: new Date() } } : {}
 			}
 		});
@@ -52,15 +52,15 @@ export class UserDal {
 		return await this.user.deleteOne({ _id: id });
 	}
 
-	async create(source: { email?: string, phone?: string, name?: string }, option: { verify: boolean, role: Array<'user'> }) {
+	async create(source: { email?: string, phone?: string, name?: string }, option: { verify: boolean, type: Array<UserType> }) {
 		const { email, phone, name } = source;
-		const { verify, role } = option;
+		const { verify, type } = option;
 
 		return await this.user.insertOne({
 			name: name || displayPhone(phone) || email,
 			...phone ? { phone: { number: phone, verify } } : {},
 			...email ? { email: { address: phone, verify } } : {},
-			role,
+			type,
 			status: 'active'
 		});
 	}

@@ -13,6 +13,7 @@ interface LoginResult {
         name: string
         phone: { number?: string, verify?: boolean }
         email: { address?: string, verify?: boolean }
-        role: Array<'user' | 'pro'>
+        type: Array<UserType>
+        role: Array<string>
     }
 }

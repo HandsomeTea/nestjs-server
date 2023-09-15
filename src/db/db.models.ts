@@ -1,5 +1,6 @@
-import User from './mongodb/models/user';
+import Users from './mongodb/models/user';
 import UserTokens from './mongodb/models/user-token';
+import Roles from './mongodb/models/role';
 // import User from './sequelize/entitys/user';
 
-export { User, UserTokens };
+export { Users, UserTokens, Roles };

@@ -7,7 +7,8 @@ class UserSchema {
 	@Prop({ type: Object }) phone?: { number: string, verify: boolean };
 	@Prop({ type: Object }) email?: { address: string, verify: boolean };
 	@Prop({ type: Object }) password?: { bcrypt: string, algorithm: 'sha-256' | 'sha-1', updateAt: Date, wrongTimes?: number, unLockAt?: Date };
-	@Prop({ type: Array }) role: Array<'user'>;
+	@Prop({ type: Array }) type: Array<UserType>;
+	@Prop({ type: Array }) role: Array<string>;
 	@Prop({ type: Object }) avatar?: { url: string, updateAt: Date };
 	@Prop({ type: String }) status: 'active';
 	@Prop({ type: Date }) lastLogin: Date;

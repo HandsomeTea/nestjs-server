@@ -20,7 +20,9 @@ module.exports = {
         UserModel: true,
         LoginResult: true,
         UserTokenModel: true,
-        UserStatus: true
+        UserStatus: true,
+        UserType: true,
+        RoleModel: true
     },
     rules: {
         'prettier/prettier': 'off',

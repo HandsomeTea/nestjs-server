@@ -1,5 +1,6 @@
 /** dto中，最终抛出的class的参数定义应与接口的参数定义相同 */
 
+import { isEmail, isPhone } from '@coco-sheng/js-tools';
 import { IsIn, registerDecorator, ValidationOptions, ValidatorConstraintInterface, ValidationArguments, ValidatorConstraint } from 'class-validator';
 
 interface LoginArgs {
@@ -20,8 +21,7 @@ class CheckAccountConstraint implements ValidatorConstraintInterface {
 		if (type === 'resume') {
 			return true;
 		} else {
-			return /^((\+|00)86)?1[3-9]\d{9}$/.test(account) ||
-				/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(account);
+			return isPhone(account) || isEmail(account);
 		}
 	}
 
