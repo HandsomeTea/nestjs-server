@@ -1,6 +1,7 @@
 import { DbModule } from '@/db/db.module';
 import { Module } from '@nestjs/common';
 import { UserDalProvider } from './user.dal';
+import { UserTokenDalProvider } from './user-token.dal';
 import { CacheModule } from './cache/cache.module';
 
 @Module({
@@ -8,7 +9,7 @@ import { CacheModule } from './cache/cache.module';
 		DbModule,
 		CacheModule
 	],
-	providers: [UserDalProvider],
-	exports: [UserDalProvider]
+	providers: [UserDalProvider, UserTokenDalProvider],
+	exports: [UserDalProvider, UserTokenDalProvider]
 })
 export class DalModule { }

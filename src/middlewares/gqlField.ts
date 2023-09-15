@@ -1,6 +1,6 @@
 import { FieldMiddleware, MiddlewareContext, NextFn } from '@nestjs/graphql';
 import { log } from '@/configs';
-import { typeIs } from '@/utils';
+import { typeIs } from '@coco-sheng/js-tools';
 
 /**
  * 字段中间件可以用在

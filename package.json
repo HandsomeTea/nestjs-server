@@ -35,6 +35,7 @@
     },
     "homepage": "https://github.com/HandsomeTea/nestjs-server#readme",
     "dependencies": {
+        "@coco-sheng/js-tools": "^1.0.1",
         "@nestjs/apollo": "^11.0.6",
         "@nestjs/common": "^9.0.0",
         "@nestjs/config": "^2.3.2",

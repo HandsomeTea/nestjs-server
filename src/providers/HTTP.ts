@@ -147,38 +147,8 @@ export class ServerRequest {
 		return await this.send(url, method, options, { baseURL: process.env.MESSAGE_SERVER_ADDR });
 	}
 
-	private async sendToBalanceServer(url: string, method: Method, options: HttpArgumentOption) {
-		return await this.send(url, method, options, { baseURL: process.env.BALANCE_SERVER_ADDR });
-	}
-
-	private async sendToApplicationServer(url: string, method: Method, options?: HttpArgumentOption) {
-		return await this.send(url, method, options, { baseURL: process.env.APPLICATION_SERVER_ADDR });
-	}
-
-	async checkLoginCode(code: string, option: { phone?: string, email?: string, appId: string, companyId: string }) {
+	async checkLoginCode(code: string, option: { phone?: string, email?: string }) {
 		return await this.sendToMessageServer(`/v1/code/${code}/check`, 'POST', { body: option });
-	}
-
-	async addAppBalance(data: { userId: string, appId: string, quota: number }) {
-		return await this.sendToBalanceServer('/v1/balance/recharge', 'POST', { body: data }) as unknown as { balance: number };
-	}
-
-	async getAppPolicy(appId: string) {
-		return await this.sendToApplicationServer(`/v1/app/${appId}/policy`, 'GET') as unknown as {
-			isUseful: boolean
-			register: boolean
-			reserve: boolean
-			companyAuth: boolean
-			userAuth: boolean
-		};
-	}
-
-	async checkAppLoginAuth(appId: string, info: { companyId?: string, phone?: string, email?: string }) {
-		return await this.sendToApplicationServer(`/v1/auth/app/${appId}/check`, 'GET', { query: info });
-	}
-
-	async checkAppForApi(appId: string) {
-		return await this.sendToApplicationServer('/v1/app/status', 'GET', { query: { appId } });
 	}
 }
 

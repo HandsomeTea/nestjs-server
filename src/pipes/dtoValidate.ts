@@ -22,10 +22,14 @@ export class ValidationDtoPipe implements PipeTransform {
 		const errors = await validate(object);
 
 		if (errors.length > 0) {
-			const msg = errors.map(a => Object.values(a.constraints).join(',')).join(',');
-
 			log(metadata.metatype.name).error(errors);
-			throw new Exception(msg, ErrorCode.INVALID_ARGUMENTS);
+			const msgs: Array<string> = [];
+
+			errors.map(a => msgs.push(...Object.values(a.constraints)));
+			msgs.map((a, i) => {
+				msgs[i] = `${i + 1}、${a}`;
+			});
+			throw new Exception(`Parameters do not conform to api requirements: ${msgs.join(' ')}`, ErrorCode.INVALID_ARGUMENTS);
 		}
 		return value;
 	}

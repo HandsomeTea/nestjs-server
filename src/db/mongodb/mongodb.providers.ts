@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 import { system } from '@/configs';
 import User from './models/user';
+import UserTokens from './models/user-token';
 
 export const dbConnectProvider = {
 	provide: 'MONGODB_CONNECTION',
@@ -22,5 +23,11 @@ export const dbConnectProvider = {
 export const UserProvider = {
 	provide: 'USER_MODEL',
 	useFactory: () => new User(),
+	inject: ['MONGODB_CONNECTION']
+};
+
+export const UserTokenProvider = {
+	provide: 'USER_TOKEN_MODEL',
+	useFactory: () => new UserTokens(),
 	inject: ['MONGODB_CONNECTION']
 };

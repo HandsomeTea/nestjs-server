@@ -6,6 +6,7 @@
 import { NestFactory } from '@nestjs/core';
 import * as httpContext from 'express-http-context';
 import * as compression from 'compression';
+import * as bodyParser from 'body-parser';
 // import * as csurf from 'csurf';
 import { MasterModule } from '@/modules';
 import { requestHandle } from '@/middlewares';
@@ -13,7 +14,7 @@ import { ResponseHandle /*, TestInterceptor*/ } from '@/interceptors';
 import { ErrorHandle } from '@/filters';
 import { updateOrCreateLogInstance, system } from '@/configs';
 // import { JWTCheckHandle } from '@/guard';
-// import { ValidationPipe } from '@/pipe';
+import { ValidationDtoPipe } from '@/pipes';
 
 (async () => {
 	updateOrCreateLogInstance(); // 日志初始化
@@ -38,6 +39,7 @@ import { updateOrCreateLogInstance, system } from '@/configs';
 		// csurf(),
 		compression(),
 		httpContext.middleware,
+		bodyParser.json({ limit: '50mb' }),
 		requestHandle
 	);
 
@@ -45,7 +47,7 @@ import { updateOrCreateLogInstance, system } from '@/configs';
 	// app.useGlobalGuards(new JWTCheckHandle());
 
 	/** 全局管道 */
-	// app.useGlobalPipes(new ValidationPipe());
+	app.useGlobalPipes(new ValidationDtoPipe());
 
 	/** 后置拦截器 */
 	app.useGlobalInterceptors(new ResponseHandle() /*, new TestInterceptor()*/);

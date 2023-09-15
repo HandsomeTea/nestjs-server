@@ -17,7 +17,10 @@ module.exports = {
     },
     globals: {
         ExceptionInstance: true,
-        UserModel: true
+        UserModel: true,
+        LoginResult: true,
+        UserTokenModel: true,
+        UserStatus: true
     },
     rules: {
         'prettier/prettier': 'off',

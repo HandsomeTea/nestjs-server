@@ -1,20 +1,19 @@
-import { Controller, Post, Body, UsePipes, Get, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, Patch, Param, Delete } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { CreateUserDto, UpdateUserDto, LoginDto } from './dto';
 // import { ReqUserInfo } from '@/decorators';
 import { ValidationDtoPipe } from '@/pipes';
 // import { TestInterceptor } from '@/interceptors';
 
-/** /api/v1/user */
+/** /api/project/service/v1/user */
 // @UseInterceptors(TestInterceptor)
-@Controller('v1/user')
+@Controller('project/service/v1/user')
 export class UserController {
 	constructor(private readonly userService: UserService) { }
 
 	// @UseInterceptors(TestInterceptor)
 	@Post()
-	@UsePipes(new ValidationDtoPipe())
+	// @UsePipes(new ValidationDtoPipe())
 	// create(@ReqUserInfo() user: Record<string, string>) { //自定义修饰器的使用
 	create(@Body() user: CreateUserDto) {
 		return this.userService.create(user);
@@ -38,5 +37,16 @@ export class UserController {
 	@Delete(':id')
 	remove(@Param('id') id: string) {
 		return this.userService.remove(id);
+	}
+}
+
+/** /api/projectpub/service/v1/account */
+@Controller('projectpub/service/v1/account')
+export class AccountPubController {
+	constructor(private readonly userService: UserService) { }
+
+	@Post('/login')
+	login(@Body() info: LoginDto) {
+		return this.userService.login(info);
 	}
 }

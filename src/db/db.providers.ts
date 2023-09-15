@@ -1,4 +1,4 @@
-import { dbConnectProvider, UserProvider } from './mongodb/mongodb.providers';
+import { dbConnectProvider, UserProvider, UserTokenProvider } from './mongodb/mongodb.providers';
 // import { dbConnectProvider, UserProvider } from './sequelize/sequelize.providers';
 
-export { dbConnectProvider, UserProvider };
+export { dbConnectProvider, UserProvider, UserTokenProvider };
