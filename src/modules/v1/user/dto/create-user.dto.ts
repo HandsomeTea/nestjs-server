@@ -1,16 +1,16 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateUserDto {
-
-	@IsNotEmpty({ message: 'create用户名不能为空' })
-	@IsString({ message: 'create用户名必须为字符串' })
 	readonly name?: string;
 
-	readonly phone?: string;
+	@IsNotEmpty({ message: '手机号不能为空' })
+	readonly phone: string;
 
 	readonly email?: string;
 
 	readonly password?: string;
+
+	readonly role?: Array<string>;
 
 	readonly avatar?: string;
 

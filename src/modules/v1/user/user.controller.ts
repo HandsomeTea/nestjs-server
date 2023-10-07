@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, Patch, Param, Delete, Query } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto, LoginDto } from './dto';
 // import { ReqUserInfo } from '@/decorators';
@@ -20,8 +20,8 @@ export class UserController {
 	}
 
 	@Get()
-	findAll() {
-		return this.service.findAll();
+	getList(@Query() query: { skip?: number, limit?: number, keyword?: string }) {
+		return this.service.page(query);
 	}
 
 	@Get(':id')
@@ -34,8 +34,8 @@ export class UserController {
 		return this.service.update(id, updateUser);
 	}
 
-	@Delete(':id')
-	remove(@Param('id') id: string) {
+	@Delete()
+	remove(@Body('id') id: Array<string>) {
 		return this.service.remove(id);
 	}
 }

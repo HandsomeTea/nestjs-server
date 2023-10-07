@@ -14,8 +14,18 @@ export class UserDal {
 		return await this.user.insertOne(data);
 	}
 
-	async find() {
-		return await this.user.find();
+	async paging(option: { keyword?: string, skip?: number, limit?: number }) {
+		const { keyword, skip = 0, limit = 10 } = option;
+
+		return await this.user.paging({
+			...keyword ? {
+				$or: [
+					{ name: { $regex: keyword, $options: 'i' } },
+					{ 'phone.number': { $regex: keyword, $options: 'i' } },
+					{ 'email.address': { $regex: keyword, $options: 'i' } }
+				]
+			} : {}
+		}, limit, skip, { createdAt: 'desc' }, { projection: { password: 0 } });
 	}
 
 	async findById(id: string) {
@@ -24,7 +34,7 @@ export class UserDal {
 		if (cacheResult) {
 			return cacheResult;
 		}
-		const result = await this.user.findById(id);
+		const result = await this.user.findById(id, { projection: { password: 0 } });
 
 		if (!result) {
 			return null;
@@ -48,8 +58,8 @@ export class UserDal {
 		});
 	}
 
-	async deleteOne(id: string) {
-		return await this.user.deleteOne({ _id: id });
+	async deleteMany(id: Array<string>) {
+		return await this.user.deleteMany({ _id: { $in: id } });
 	}
 
 	async create(source: { email?: string, phone?: string, name?: string }, option: { verify: boolean, type: Array<UserType> }) {
@@ -105,6 +115,14 @@ export class UserDal {
 		await this.user.updateOne({ _id: userId }, {
 			$set: {
 				lastLogin: new Date()
+			}
+		});
+	}
+
+	async removeRoles(roleIds: Array<string>) {
+		await this.user.updateMany({}, {
+			$pullAll: {
+				role: roleIds
 			}
 		});
 	}

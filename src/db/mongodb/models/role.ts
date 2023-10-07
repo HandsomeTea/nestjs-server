@@ -5,6 +5,7 @@ import BaseModel from './base';
 class RoleSchema {
 	@Prop({ type: String, required: true, trim: true }) name: string;
 	@Prop({ type: Object }) permission: Record<string, Array<string>>;
+	@Prop({ type: String }) type: 'inner-admin' | 'customer';
 }
 
 

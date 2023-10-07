@@ -29,6 +29,7 @@ interface RoleModel {
     _id: string
     name: string
     permission: Record<string, Array<string>>
+    type: 'inner-admin' | 'customer'
     createdAt: Date
     updatedAt: Date
 }

@@ -25,7 +25,7 @@ export class UserService {
 	}
 
 	async create(user: CreateUserDto) {
-		const { name, phone, email, password, type, avatar } = user;
+		const { name, phone, email, password, type, avatar, role } = user;
 
 		return await this.user.insertOne({
 			name: name || phone && displayPhone(phone) || email,
@@ -42,17 +42,15 @@ export class UserService {
 					}
 				};
 			})() : {},
+			...Array.isArray(role) && role.length > 0 ? { role } : { role: [] },
 			...Array.isArray(type) && type.length > 0 ? { type } : { type: ['user'] },
 			...avatar ? { avatar: { url: avatar, updateAt: new Date() } } : {},
 			status: 'active'
 		});
 	}
 
-	async findAll() {
-		// return process.env.PORT;
-		// throw new Exception('cuo le', ErrorCode.BE_LOGOUT);
-		// throw new Exception('cuo le', HttpStatus.BAD_GATEWAY, { userid: '213123221' });
-		return await this.user.find();
+	async page(option: { keyword?: string, skip?: number, limit?: number }) {
+		return await this.user.paging(option);
 	}
 
 	async findOne(id: string) {
@@ -79,8 +77,8 @@ export class UserService {
 		});
 	}
 
-	async remove(id: string) {
-		return await this.user.deleteOne(id);
+	async remove(id: Array<string>) {
+		return await this.user.deleteMany(id);
 	}
 
 	private async generateLoginResult(userId: string, option?: { token?: string }): Promise<LoginResult> {
