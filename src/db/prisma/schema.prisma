@@ -1,6 +1,6 @@
 datasource db {
-    provider = "mongodb"
-    url      = env("DB_URL")
+    provider = "postgresql"
+    url      = "postgres://postgres:root@localhost:5432/nest"
 }
 
 generator client {
@@ -8,6 +8,20 @@ generator client {
 }
 
 model Test {
-    id   String  @id @default(auto()) @map("_id") @db.ObjectId
+    id   Int     @id @default(autoincrement())
     name String?
 }
+
+// datasource db {
+//     provider = "mongodb"
+//     url      = env("DB_URL")
+// }
+
+// generator client {
+//     provider = "prisma-client-js"
+// }
+
+// model Test {
+//     id   String  @id @default(auto()) @map("_id") @db.ObjectId
+//     name String?
+// }

@@ -12,11 +12,7 @@ export class PrismaTestDal {
 	}
 
 	async find() {
-		return await this.model.findMany({
-			where: {
-				name: '18612345678'
-			}
-		});
+		return await this.model.findMany();
 	}
 }
 
