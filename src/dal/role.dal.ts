@@ -1,11 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Roles } from '@/db/db.models';
-import { CacheServer } from './cache/cache.interfaces';
 
 @Injectable()
 export class RoleDal {
 	constructor(
-		@Inject('CACHE_MODEL') private cacheServer: CacheServer,
 		@Inject('ROLE_MODEL') private role: Roles
 	) {
 		this.init();

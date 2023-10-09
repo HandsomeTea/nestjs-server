@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Users } from '@/db/db.models';
-import { CacheServer } from './cache/cache.interfaces';
+// import { CacheServer } from './cache/cache.interfaces';
 import { displayPhone } from '@coco-sheng/js-tools';
 
 @Injectable()
 export class UserDal {
 	constructor(
-		@Inject('CACHE_MODEL') private cacheServer: CacheServer,
+		// @Inject('CACHE_MODEL') private cacheServer: CacheServer,
 		@Inject('USER_MODEL') private user: Users
 	) { }
 
@@ -29,17 +29,17 @@ export class UserDal {
 	}
 
 	async findById(id: string) {
-		const cacheResult = await this.cacheServer.getUserById(id);
+		// const cacheResult = await this.cacheServer.getUserById(id);
 
-		if (cacheResult) {
-			return cacheResult;
-		}
+		// if (cacheResult) {
+		// 	return cacheResult;
+		// }
 		const result = await this.user.findById(id, { projection: { password: 0 } });
 
 		if (!result) {
 			return null;
 		}
-		await this.cacheServer.setUserById(result);
+		// await this.cacheServer.setUserById(result);
 		return result;
 	}
 

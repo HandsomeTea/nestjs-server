@@ -112,6 +112,7 @@ export class UserService {
 				name: user.name || user.phone.number && displayPhone(user.phone.number) || user.email.address,
 				phone: user.phone ? { number: displayPhone(user.phone.number) as string, verify: Boolean(user.phone.verify) } : {},
 				email: user.email || {},
+				avatar: user.avatar,
 				type: user.type,
 				role: user.role || []
 			}

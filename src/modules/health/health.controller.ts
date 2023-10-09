@@ -1,7 +1,7 @@
 import { Controller, Get } from '@nestjs/common';
 import { HealthCheck, HealthCheckService, MongooseHealthIndicator/*, SequelizeHealthIndicator*/ } from '@nestjs/terminus';
 
-/** /api/v1/health */
+/** /api/health */
 @Controller('health')
 export class HealthController {
 	constructor(private health: HealthCheckService, private mongoose: MongooseHealthIndicator/*, private sequelize: SequelizeHealthIndicator*/) { }

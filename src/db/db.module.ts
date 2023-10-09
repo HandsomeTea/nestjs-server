@@ -1,9 +1,11 @@
 /**
  * 切换数据库
- * 只需切换db.module和db.providers中模块的输出指向
+ * 只需切换providers中模块的输出指向
  */
 import { Module } from '@nestjs/common';
-import { dbConnectProvider, UserProvider, UserTokenProvider, RoleProvider } from './db.providers';
+import { dbConnectProvider, UserProvider, UserTokenProvider, RoleProvider } from './mongoose/mongoose.providers';
+// import { dbConnectProvider, UserProvider } from './sequelize/sequelize.providers';
+// import { dbConnectProvider } from './prisma/prisma.providers';
 
 @Module({
 	providers: [dbConnectProvider, UserProvider, UserTokenProvider, RoleProvider],
