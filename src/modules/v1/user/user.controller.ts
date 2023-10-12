@@ -1,8 +1,10 @@
-import { Controller, Post, Body, Get, Patch, Param, Delete, Query } from '@nestjs/common';
+import { Controller, Post, Body, Get, Patch, Param, Delete, Query, Sse } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto, LoginDto } from './dto';
 // import { ReqUserInfo } from '@/decorators';
 import { ValidationDtoPipe } from '@/pipes';
+import { Observable } from 'rxjs';
+import * as EventEmitter from 'events';
 // import { TestInterceptor } from '@/interceptors';
 
 /** /api/project/service/v1/user */
@@ -17,6 +19,37 @@ export class UserController {
 	// create(@ReqUserInfo() user: Record<string, string>) { //自定义修饰器的使用
 	create(@Body() user: CreateUserDto) {
 		return this.service.create(user);
+	}
+
+	@Sse()
+	sse(): Observable<MessageEvent> { // 必须返回一个Observable
+		const myEmitter = new EventEmitter(); // 注意局部定义
+		const eventName = 'send';
+		let count = 0;
+
+		const timer = setInterval(() => {
+			count++;
+			myEmitter.emit('send', { count });
+
+			if (count === 5) {
+				clearInterval(timer);
+				myEmitter.emit('send', { streamEnd: true });
+				myEmitter.removeListener('send', () => null);
+			}
+		}, 1000);
+
+		// fn(myEmitter, eventName, () => {
+		// 	myEmitter.emit(eventName, { streamEnd: true });
+		// 	myEmitter.removeListener(eventName, () => null);
+		// });
+
+		return new Observable<MessageEvent>((observer) => {
+			myEmitter.on(eventName, data => {
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				// @ts-ignore
+				observer.next({ data }); // 返回的数据必须加一个为data的key，这是sse标准，将这个key加在了发送数据前的最后一步
+			});
+		});
 	}
 
 	@Get()
