@@ -9,13 +9,24 @@ export class RoleDal {
 		this.init();
 	}
 
+	private getModeledData(role: any): RoleModel {
+		return {
+			_id: role.id,
+			name: role.name,
+			permission: role.permission,
+			type: role.type,
+			createdAt: role.createdAt,
+			updatedAt: role.updatedAt
+		};
+	}
+
 	private async init() {
 		if ((await this.role.findMany({ where: { type: 'INNER_ADMIN' } })).length === 0) {
 			await this.role.create({
 				data: {
 					type: 'INNER_ADMIN',
 					name: 'admin',
-					permission: { all: [] }
+					permission: { all: ['*'] }
 				}
 			});
 		}
@@ -24,27 +35,34 @@ export class RoleDal {
 	async find(option: { id?: string | Array<string>, name?: string }) {
 		const { id, name } = option;
 
-		return await this.role.findMany({
+		return (await this.role.findMany({
 			where: {
 				...id ? { id: typeof id === 'string' ? id : { in: id } } : {},
 				...name ? { name: { contains: name.toLowerCase() } } : {}
 			}
-		});
+		})).map(this.getModeledData);
 	}
 
 	async paging(option: { keyword?: string, skip?: number, limit?: number }) {
 		const { keyword, skip = 0, limit = 10 } = option;
 
-		return await this.role.findMany({
-			where: {
-				...keyword ? { name: { contains: keyword.toLowerCase() } } : {}
-			},
-			skip,
-			take: limit,
-			orderBy: {
-				createdAt: 'desc'
-			}
-		});
+		return {
+			list: (await this.role.findMany({
+				where: {
+					...keyword ? { name: { contains: keyword.toLowerCase() } } : {}
+				},
+				skip,
+				take: limit,
+				orderBy: {
+					createdAt: 'desc'
+				}
+			})).map(role => this.getModeledData(role)),
+			total: await this.role.count({
+				where: {
+					...keyword ? { name: { contains: keyword.toLowerCase() } } : {}
+				}
+			})
+		};
 	}
 
 	async updateOne(id: string, update: { name?: string, permission?: Record<string, Array<string>> }) {
@@ -81,18 +99,21 @@ export class RoleDal {
 	}
 
 	async create(role: { name: string, permission: Record<string, Array<string>> }) {
-		return await this.role.create({ data: { ...role, type: 'CUSTOMER' } });
+		const result = await this.role.create({ data: { ...role, type: 'CUSTOMER' } });
+
+		return this.getModeledData(result);
 	}
 
 	async findOne(option: { id?: string, name?: string }) {
 		const { id, name } = option;
-
-		return await this.role.findFirst({
+		const role = await this.role.findFirst({
 			where: {
 				...id ? { id } : {},
 				...name ? { name } : {}
 			}
 		});
+
+		return role ? this.getModeledData(role) : null;
 	}
 }
 

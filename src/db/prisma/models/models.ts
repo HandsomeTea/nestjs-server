@@ -4,6 +4,7 @@
  * 3,在 schema.prisma文件所在的目录运行 npx prisma generate
  *
  * 其它
+ * npx prisma studio，启动prisma数据库可视化工具
  * npx prisma db pull ,将现有的数据库的表结构拉到schema.prisma中，数据库地址就是.env中环境变量配置的地址
  * npx prisma db push ,将schema.prisma中的表结构同步到.env中数据库地址环境变量配置的数据库中，相当于创建表
  * npx prisma -h ,查看更多有用的帮助

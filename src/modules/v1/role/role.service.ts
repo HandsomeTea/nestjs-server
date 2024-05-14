@@ -25,7 +25,9 @@ export class RoleService {
 	}
 
 	async find(option: { id?: Array<string> | string, name?: string }) {
-		return await this.role.find(option);
+		const roles = await this.role.find(option);
+
+		return roles.map(role => role.permission);
 	}
 
 	async delete(id: Array<string>) {

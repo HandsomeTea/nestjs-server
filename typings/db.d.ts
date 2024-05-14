@@ -1,12 +1,13 @@
 type UserStatus = 'ACTIVE' | 'LOCKED'
 type UserType = 'ADMIN' | 'USER'
+type PasswordAlgorithm = 'sha-256' | 'sha-1'
 
 interface UserModel {
     _id: string
     name: string
     phone?: { number: string, verify: boolean }
     email?: { address: string, verify: boolean }
-    password?: { bcrypt: string, algorithm: 'sha-256' | 'sha-1', updateAt: Date, wrongTimes?: number, unLockAt?: Date }
+    password?: { bcrypt: string, algorithm: PasswordAlgorithm, updateAt: Date, wrongTimes?: number, unLockAt?: Date }
     type: Array<UserType>
     role?: Array<string>
     avatar?: { url: string, updateAt: Date }

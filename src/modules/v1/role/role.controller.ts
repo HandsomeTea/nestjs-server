@@ -11,8 +11,12 @@ export class RoleController {
 	}
 
 	@Get()
-	getList(@Query() query: { skip?: number, limit?: number, keyword?: string }) {
-		return this.service.page(query);
+	getList(@Query() query: { skip?: string, limit?: string, keyword?: string }) {
+		return this.service.page({
+			...query.skip ? { skip: parseInt(query.skip) } : {},
+			...query.limit ? { limit: parseInt(query.limit) } : {},
+			keyword: query.keyword
+		});
 	}
 
 	@Get('/search')

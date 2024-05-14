@@ -13,4 +13,7 @@ services:
             - |
                 cd /usr/src/app
                 [ ! -d "/usr/src/app/node_modules" ] && npm install
-                npm run start
+                cd /usr/src/app/src/db/prisma/
+                npx prisma generate
+                cd /usr/src/app
+                npm run start:dev

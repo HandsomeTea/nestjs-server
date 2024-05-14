@@ -5,52 +5,119 @@ import { displayPhone } from '@coco-sheng/js-tools';
 @Injectable()
 export class UserDal {
 	constructor(
-        @Inject('USER_MODEL') private user: Users
+		@Inject('USER_MODEL') private user: Users
 	) { }
 
-	async insertOne(data: Omit<UserModel, '_id' | 'createdAt' | 'updatedAt'>) {
-		return await this.user.create({
+	private getModeledData(user: any): UserModel {
+		return {
+			_id: user.id,
+			name: user.name,
+			...user.phone ? {
+				phone: { number: user.phone, verify: user.phoneVerify }
+			} : {},
+			...user.email ? {
+				email: { address: user.email, verify: user.emailVerify }
+			} : {},
+			...user.passwordBcrypt ? {
+				password: {
+					bcrypt: user.passwordBcrypt,
+					algorithm: user.passwordAlgorithm as PasswordAlgorithm,
+					updateAt: user.passwordUpdateAt,
+					wrongTimes: user.passwordWrongTimes,
+					unLockAt: user.passwordUnlockAt
+				}
+			} : {},
+			type: user.type,
+			role: user.role,
+			...user.avatarUrl ? {
+				avatar: {
+					url: user.avatarUrl,
+					updateAt: user.avatarUpdateAt
+				}
+			} : {},
+			status: user.status,
+			...user.lastLogin ? { lastLogin: user.lastLogin } : {},
+			...user.firstLogin ? { firstLogin: user.firstLogin } : {},
+			createdAt: user.createdAt,
+			updatedAt: user.updatedAt
+		};
+	}
+
+	async insertOne(data: Omit<UserModel, '_id' | 'createdAt' | 'updatedAt'>): Promise<UserModel> {
+		const user = await this.user.create({
 			data: {
 				name: data.name,
 				phone: data.phone.number,
-				phoneVerify: Boolean(data.phone.verify),
-				email: data.email.address,
-				emailVerify: Boolean(data.email.verify),
-				passwordBcrypt: data.password.bcrypt,
-				passwordAlgorithm: data.password.algorithm,
-				passwordUpdateAt: data.password.updateAt,
+				phoneVerify: Boolean(data.phone?.verify),
+				email: data.email?.address,
+				emailVerify: Boolean(data.email?.verify),
+				passwordBcrypt: data.password?.bcrypt,
+				passwordAlgorithm: data.password?.algorithm,
+				passwordUpdateAt: data.password?.updateAt,
 				type: data.type,
 				status: data.status,
 				role: data.role
 			}
 		});
+
+		return this.getModeledData(user);
 	}
 
 	async paging(option: { keyword?: string, skip?: number, limit?: number }) {
 		const { keyword, skip = 0, limit = 10 } = option;
 
-		return await this.user.findMany({
-			where: {
-				...keyword ? {
-					OR: [{
-						name: { contains: keyword.toLowerCase() }
-					}, {
-						phone: { contains: keyword.toLowerCase() }
-					}, {
-						email: { contains: keyword.toLowerCase() }
-					}]
-				} : {}
-			},
-			skip,
-			take: limit, orderBy: { createdAt: 'desc' },
-			select: {
-				passwordAlgorithm: false,
-				passwordBcrypt: false,
-				passwordUpdateAt: false,
-				passwordUnlockAt: false,
-				passwordWrongTimes: false
-			}
-		});
+		return {
+			list: (await this.user.findMany({
+				where: {
+					...keyword ? {
+						OR: [{
+							name: { contains: keyword.toLowerCase() }
+						}, {
+							phone: { contains: keyword.toLowerCase() }
+						}, {
+							email: { contains: keyword.toLowerCase() }
+						}]
+					} : {}
+				},
+				skip,
+				take: limit, orderBy: { createdAt: 'desc' },
+				select: {
+					passwordAlgorithm: false,
+					passwordBcrypt: false,
+					passwordUpdateAt: false,
+					passwordUnlockAt: false,
+					passwordWrongTimes: false,
+					name: true,
+					phone: true,
+					phoneVerify: true,
+					email: true,
+					emailVerify: true,
+					type: true,
+					status: true,
+					role: true,
+					avatarUrl: true,
+					avatarUpdateAt: true,
+					lastLogin: true,
+					firstLogin: true,
+					id: true,
+					createdAt: true,
+					updatedAt: true
+				}
+			})).map(a => this.getModeledData(a)),
+			total: await this.user.count({
+				where: {
+					...keyword ? {
+						OR: [{
+							name: { contains: keyword.toLowerCase() }
+						}, {
+							phone: { contains: keyword.toLowerCase() }
+						}, {
+							email: { contains: keyword.toLowerCase() }
+						}]
+					} : {}
+				},
+			})
+		};
 	}
 
 	async findById(id: string): Promise<UserModel | null> {
@@ -66,16 +133,29 @@ export class UserDal {
 				passwordBcrypt: false,
 				passwordUpdateAt: false,
 				passwordUnlockAt: false,
-				passwordWrongTimes: false
+				passwordWrongTimes: false,
+				name: true,
+				phone: true,
+				phoneVerify: true,
+				email: true,
+				emailVerify: true,
+				type: true,
+				status: true,
+				role: true,
+				avatarUrl: true,
+				avatarUpdateAt: true,
+				lastLogin: true,
+				firstLogin: true,
+				id: true,
+				createdAt: true,
+				updatedAt: true
 			}
 		});
 
 		if (!user) {
 			return null;
 		}
-		const result = {
-
-		} as UserModel;
+		const result = this.getModeledData(user);
 		// await this.cacheServer.setUserById(result);
 
 		return result;
@@ -136,9 +216,7 @@ export class UserDal {
 			return null;
 		}
 
-		return {
-
-		} as UserModel;
+		return this.getModeledData(user);
 	}
 
 	async setPhoneVerify(userId: string, verify?: boolean) {

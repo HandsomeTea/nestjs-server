@@ -4,8 +4,18 @@ import { UserTokens } from '@/db/db.models';
 @Injectable()
 export class UserTokenDal {
 	constructor(
-        @Inject('USER_TOKEN_MODEL') private userToken: UserTokens
+		@Inject('USER_TOKEN_MODEL') private userToken: UserTokens
 	) { }
+
+	private getModeledData(token: any): UserTokenModel {
+		return {
+			_id: token.id,
+			userId: token.userId,
+			hashedToken: token.hashedToken,
+			createdAt: token.createdAt,
+			updatedAt: token.updatedAt
+		};
+	}
 
 	async insertOne(token: { userId: string, hashedToken: string }) {
 		await this.userToken.create({ data: token });
@@ -38,13 +48,18 @@ export class UserTokenDal {
 
 	async findOne(option?: { userId?: string, hashedToken?: string }) {
 		const { userId, hashedToken } = option;
-
-		return await this.userToken.findFirst({
+		const token = await this.userToken.findFirst({
 			where: {
 				...userId ? { userId } : {},
 				...hashedToken ? { hashedToken } : {}
 			}
 		});
+
+		if (!token) {
+			return null;
+		}
+
+		return this.getModeledData(token);
 	}
 }
 

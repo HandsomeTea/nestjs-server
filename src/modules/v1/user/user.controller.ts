@@ -22,7 +22,7 @@ export class UserController {
 		return this.service.create(user);
 	}
 
-	@Sse()
+	@Sse('/sse')
 	sse(@Response() res: Express.Response): Observable<MessageEvent> { // 必须返回一个Observable
 		const myEmitter = new EventEmitter(); // 注意局部定义
 		const eventName = 'send';
@@ -55,8 +55,12 @@ export class UserController {
 	}
 
 	@Get()
-	getList(@Query() query: { skip?: number, limit?: number, keyword?: string }) {
-		return this.service.page(query);
+	getList(@Query() query: { skip?: string, limit?: string, keyword?: string }) {
+		return this.service.page({
+			...query.skip ? { skip: parseInt(query.skip) } : {},
+			...query.limit ? { limit: parseInt(query.limit) } : {},
+			keyword: query.keyword
+		});
 	}
 
 	@Get(':id')
