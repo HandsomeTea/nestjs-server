@@ -10,12 +10,18 @@
  */
 
 /**
- * 该models文件完全没必要
  * models已经被prisma封装到client中，只需在dal中引入即可，不需要手动定义
  * prisma会根据本地生成的表结构定义文件，生成表结构的ts定义
  */
-import { Test } from '@prisma/client';
+import { Prisma } from '@prisma/client';
+
+type Roles = Prisma.RoleDelegate;
+type Users = Prisma.UserDelegate;
+type UserTokens = Prisma.UserTokenDelegate;
+
 
 export {
-	Test as Tests
+	Roles,
+	Users,
+	UserTokens
 };

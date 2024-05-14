@@ -1,20 +1,20 @@
 import { Module } from '@nestjs/common';
 import { TerminusModule } from '@nestjs/terminus';
-import { MongooseModule } from '@nestjs/mongoose';
+// import { MongooseModule } from '@nestjs/mongoose';
 // import { SequelizeModule } from '@nestjs/sequelize';
 import { HealthController } from './health.controller';
 // import { system } from '@/configs';
 
 @Module({
 	imports: [
-		TerminusModule,
-		MongooseModule.forRootAsync({
-			useFactory: () => {
-				return {
-					uri: process.env.DB_URL
-				};
-			}
-		})
+		TerminusModule
+		// MongooseModule.forRootAsync({
+		// 	useFactory: () => {
+		// 		return {
+		// 			uri: process.env.DB_URL
+		// 		};
+		// 	}
+		// })
 		// SequelizeModule.forRootAsync({
 		// 	useFactory: () => {
 		// 		const { hostname, port, username, password, pathname } = new URL(process.env.DB_URL);

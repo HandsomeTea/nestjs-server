@@ -1,4 +1,4 @@
 # nestjs-server
 
-nodejs: v18.16.0
-npm: 9.5.1
+nodejs: v20.11.1
+npm: 10.2.4

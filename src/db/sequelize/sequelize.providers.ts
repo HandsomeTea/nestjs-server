@@ -7,7 +7,7 @@ export const dbConnectProvider = {
 	useFactory: async () => {
 		const { hostname, port, username, password, pathname } = new URL(process.env.DB_URL);
 		const sequelize = new Sequelize({
-			dialect: 'postgres',
+			dialect: 'mysql',
 			host: hostname,
 			port: parseInt(port),
 			username,

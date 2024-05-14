@@ -1,5 +1,5 @@
-type UserStatus = 'active' | 'lock'
-type UserType = 'admin' | 'user'
+type UserStatus = 'ACTIVE' | 'LOCKED'
+type UserType = 'ADMIN' | 'USER'
 
 interface UserModel {
     _id: string
@@ -29,7 +29,7 @@ interface RoleModel {
     _id: string
     name: string
     permission: Record<string, Array<string>>
-    type: 'inner-admin' | 'customer'
+    type: 'INNER_ADMIN' | 'CUSTOMER'
     createdAt: Date
     updatedAt: Date
 }

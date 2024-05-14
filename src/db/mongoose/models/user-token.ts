@@ -5,8 +5,6 @@ import BaseModel from './base';
 class UserTokenSchema {
 	@Prop({ type: String }) userId: string;
 	@Prop({ type: String, unique: true }) hashedToken: string;
-	@Prop({ type: String }) appId: string;
-	@Prop({ type: String }) companyId: string;
 }
 
 export default class UserToken extends BaseModel<UserTokenModel> {

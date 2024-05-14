@@ -12,6 +12,24 @@ export class PrismaServer extends PrismaClient implements OnModuleInit {
 }
 
 export const dbConnectProvider = {
-	provide: 'PRISMA',
+	provide: 'PRISMA_CONNECTION',
 	useClass: PrismaServer
+};
+
+export const UserProvider = {
+	provide: 'USER_MODEL',
+	useFactory: () => new PrismaServer().user,
+	inject: ['PRISMA_CONNECTION']
+};
+
+export const UserTokenProvider = {
+	provide: 'USER_TOKEN_MODEL',
+	useFactory: () => new PrismaServer().userToken,
+	inject: ['PRISMA_CONNECTION']
+};
+
+export const RoleProvider = {
+	provide: 'ROLE_MODEL',
+	useFactory: () => new PrismaServer().role,
+	inject: ['PRISMA_CONNECTION']
 };

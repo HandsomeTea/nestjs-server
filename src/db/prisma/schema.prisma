@@ -1,27 +1,64 @@
 datasource db {
     provider = "postgresql"
-    url      = "postgres://postgres:root@localhost:5432/nest"
+    url      = "postgres://admin:admin@10.4.48.13:5432/nest"
+    // url      = env("DB_URL")
 }
 
 generator client {
     provider = "prisma-client-js"
 }
 
-model Test {
-    id   Int     @id @default(autoincrement())
-    name String?
+enum RoleType {
+    INNER_ADMIN
+    CUSTOMER
 }
 
-// datasource db {
-//     provider = "mongodb"
-//     url      = env("DB_URL")
-// }
+enum UserType {
+    USER
+    ADMIN
+}
 
-// generator client {
-//     provider = "prisma-client-js"
-// }
+enum UserStatus {
+    ACTIVE
+    LOCKED
+}
 
-// model Test {
-//     id   String  @id @default(auto()) @map("_id") @db.ObjectId
-//     name String?
-// }
+model Role {
+    name       String
+    permission Json
+    type       RoleType @default(CUSTOMER)
+    id         String   @id @default(uuid())
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+}
+
+model User {
+    name               String
+    phone              String?
+    phoneVerify        Boolean?
+    email              String?
+    emailVerify        Boolean?
+    passwordBcrypt     String?
+    passwordAlgorithm  String?
+    passwordUpdateAt   DateTime?
+    passwordWrongTimes Int?
+    passwordUnlockAt   DateTime?
+    type               UserType[]
+    status             UserStatus @default(ACTIVE)
+    role               String[]
+    avatarUrl          String?
+    avatarUpdateAt     DateTime?
+    lastLogin          DateTime?
+    firstLogin         DateTime?
+    id                 String     @id @default(uuid())
+    createdAt          DateTime   @default(now())
+    updatedAt          DateTime   @updatedAt
+}
+
+model UserToken {
+    userId      String
+    hashedToken String   @unique
+    id          String   @id @default(uuid())
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+}

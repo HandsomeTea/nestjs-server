@@ -1,0 +1,16 @@
+version: "3.8"
+services:
+    nestjs_server:
+        image: node:20.11.1
+        restart: always
+        container_name: nestjs_server
+        network_mode: host
+        volumes:
+            - ../:/usr/src/app
+        command:
+            - sh
+            - -c
+            - |
+                cd /usr/src/app
+                [ ! -d "/usr/src/app/node_modules" ] && npm install
+                npm run start

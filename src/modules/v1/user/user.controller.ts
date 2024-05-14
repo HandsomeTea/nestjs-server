@@ -1,4 +1,5 @@
-import { Controller, Post, Body, Get, Patch, Param, Delete, Query, Sse } from '@nestjs/common';
+import { Controller, Post, Body, Get, Patch, Param, Delete, Query, Sse, Response } from '@nestjs/common';
+import Express from 'express';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto, LoginDto } from './dto';
 // import { ReqUserInfo } from '@/decorators';
@@ -22,7 +23,7 @@ export class UserController {
 	}
 
 	@Sse()
-	sse(): Observable<MessageEvent> { // 必须返回一个Observable
+	sse(@Response() res: Express.Response): Observable<MessageEvent> { // 必须返回一个Observable
 		const myEmitter = new EventEmitter(); // 注意局部定义
 		const eventName = 'send';
 		let count = 0;
@@ -35,6 +36,7 @@ export class UserController {
 				clearInterval(timer);
 				myEmitter.emit('send', { streamEnd: true });
 				myEmitter.removeListener('send', () => null);
+				res.end();
 			}
 		}, 1000);
 

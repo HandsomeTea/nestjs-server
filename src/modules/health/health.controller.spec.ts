@@ -9,7 +9,11 @@ describe('HealthController', () => {
 
 	beforeEach(async () => {
 		const module: TestingModule = await Test.createTestingModule({
-			imports: [TerminusModule, ConfigModule.forRoot({ envFilePath: ['.env.local'] }), MongooseModule.forRoot(process.env.DB_URL)],
+			imports: [
+				TerminusModule,
+				ConfigModule.forRoot({ envFilePath: ['.env.local'] })
+				// MongooseModule.forRoot(process.env.DB_URL)
+			],
 			controllers: [HealthController]
 		}).compile();
 

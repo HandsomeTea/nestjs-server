@@ -43,9 +43,9 @@ export class UserService {
 				};
 			})() : {},
 			...Array.isArray(role) && role.length > 0 ? { role } : { role: [] },
-			...Array.isArray(type) && type.length > 0 ? { type } : { type: ['user'] },
+			...Array.isArray(type) && type.length > 0 ? { type } : { type: ['USER'] },
 			...avatar ? { avatar: { url: avatar, updateAt: new Date() } } : {},
-			status: 'active'
+			status: 'ACTIVE'
 		});
 	}
 
@@ -121,7 +121,7 @@ export class UserService {
 
 	private async loginByCode(code: string, option: { phone?: string, email?: string }) {
 		const { email, phone, type } = await this.HTTP.checkLoginCode(code, option) as unknown as { type: 'login-phone-code' | 'login-email-code', email?: string, phone?: string };
-		const createUserRole: Array<UserType> = ['user'];
+		const createUserRole: Array<UserType> = ['USER'];
 
 		if (email && type === 'login-email-code') {
 			const user = await this.user.findOne({ email });

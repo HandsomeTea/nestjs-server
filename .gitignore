@@ -123,5 +123,7 @@ public
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# custom
 mark.*
 documentation
+apidoc

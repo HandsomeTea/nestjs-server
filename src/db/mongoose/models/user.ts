@@ -10,7 +10,7 @@ class UserSchema {
 	@Prop({ type: Array }) type: Array<UserType>;
 	@Prop({ type: Array }) role: Array<string>;
 	@Prop({ type: Object }) avatar?: { url: string, updateAt: Date };
-	@Prop({ type: String }) status: 'active';
+	@Prop({ type: String }) status: 'ACTIVE' | 'LOCKED';
 	@Prop({ type: Date }) lastLogin: Date;
 	@Prop({ type: Date }) firstLogin: Date;
 }
