@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Patch, Param, Delete, Query, Sse, Response } from '@nestjs/common';
+import { Controller, Post, Body, Get, Patch, Put, Param, Delete, Query, Sse, Response, Request } from '@nestjs/common';
 import Express from 'express';
 import { UserService } from './user.service';
 import { CreateUserDto, UpdateUserDto, LoginDto } from './dto';
@@ -64,8 +64,8 @@ export class UserController {
 	}
 
 	@Get(':id')
-	findOne(@Param('id') id: string) {
-		return this.service.findOne(id);
+	findUser(@Param('id') id: string) {
+		return this.service.findById(id);
 	}
 
 	@Patch(':id')
@@ -74,8 +74,8 @@ export class UserController {
 	}
 
 	@Delete()
-	remove(@Body('id') id: Array<string>) {
-		return this.service.remove(id);
+	remove(@Body('id') id: string | Array<string>) {
+		return this.service.removeById(id);
 	}
 }
 
@@ -98,5 +98,22 @@ export class AccountPubController {
 	@Post('/login')
 	login(@Body() info: LoginDto) {
 		return this.service.login(info);
+	}
+}
+
+/** /api/project/service/v1/account */
+@Controller('project/service/v1/account')
+export class AccountController {
+	constructor(private readonly service: UserService) { }
+
+	/**
+	 * @api {post} /api/projectpub/service/v1/account/logout 退出登录
+	 * @apiName 退出登录
+	 * @apiGroup Account
+	 * @apiVersion 1.0.0
+	 */
+	@Put('/logout')
+	logout(@Request() req: Express.Request) {
+		return this.service.logout(req.header('x-user-id'), req.header('x-auth-token'));
 	}
 }

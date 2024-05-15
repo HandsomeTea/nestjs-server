@@ -21,11 +21,14 @@ export class UserTokenDal {
 		await this.userToken.create({ data: token });
 	}
 
-	async delete(query: { userId?: string }) {
-		const { userId } = query;
+	async delete(query: { userId?: string, hashedToken?: string }) {
+		const { userId, hashedToken } = query;
 
 		await this.userToken.deleteMany({
-			where: { ...userId ? { userId } : {} }
+			where: {
+				...userId ? { userId } : {},
+				...hashedToken ? { hashedToken } : {}
+			}
 		});
 	}
 

@@ -77,7 +77,8 @@ export class UserDal {
 						}, {
 							email: { contains: keyword.toLowerCase() }
 						}]
-					} : {}
+					} : {},
+					id: { not: '0000' }
 				},
 				skip,
 				take: limit, orderBy: { createdAt: 'desc' },
@@ -114,7 +115,8 @@ export class UserDal {
 						}, {
 							email: { contains: keyword.toLowerCase() }
 						}]
-					} : {}
+					} : {},
+					id: { not: '0000' }
 				},
 			})
 		};
@@ -161,24 +163,30 @@ export class UserDal {
 		return result;
 	}
 
-	async updateOne(id: string, update: { name?: string, phone?: string, email?: string, password?: UserModel['password'], type?: Array<UserType>, avatar?: string }) {
-		const { name, phone, email, password, type, avatar } = update;
+	async updateOne(id: string, update: { name?: string, phone?: string, email?: string, password?: UserModel['password'], type?: Array<UserType>, avatar?: string, role?: Array<string> }) {
+		const { name, phone, email, password, type, role, avatar } = update;
 
 		return await this.user.update({
-			where: { id },
+			where: { id, AND: { id: { not: '0000' } } },
 			data: {
 				...name ? { name } : {},
 				...phone ? { phone } : {},
 				...email ? { email } : {},
 				...password ? { password } : {},
 				...Array.isArray(type) && type.length > 0 ? { type } : { type: ['USER'] },
+				...Array.isArray(role) && role.length > 0 ? { role } : { role: [] },
 				...avatar ? { avatarUrl: avatar, avatarUpdateAt: new Date() } : {}
 			}
 		});
 	}
 
-	async deleteMany(id: Array<string>) {
-		return await this.user.deleteMany({ where: { id: { in: id } } });
+	async deleteById(id: Array<string> | string) {
+		return await this.user.deleteMany({
+			where: {
+				id: typeof id === 'string' ? id : { in: id },
+				AND: { id: { not: '0000' } }
+			}
+		});
 	}
 
 	async create(source: { email?: string, phone?: string, name?: string }, option: { verify: boolean, type: Array<UserType> }): Promise<UserModel> {
@@ -195,9 +203,7 @@ export class UserDal {
 			}
 		});
 
-		return {
-
-		} as UserModel;
+		return this.getModeledData(user);
 	}
 
 	/** 如果传入密码参数，密码必须经过加密算法处理，findOne函数内部不做任何处理 */
@@ -255,12 +261,23 @@ export class UserDal {
 		});
 	}
 
-	async removeRoles(roleIds: Array<string>) {
-		await this.user.updateMany({
-			data: {
-				role: roleIds
+	async removeRoleById(roleId: string) {
+		const hasRoleUsers = await this.user.findMany({
+			where: {
+				role: { has: roleId }, AND: { id: { not: '0000' } }
 			}
-		});
+		})
+
+		if (hasRoleUsers.length > 0) {
+			for (let s = 0; s < hasRoleUsers.length; s++) {
+				await this.user.update({
+					where: { id: hasRoleUsers[s].id, AND: { id: { not: '0000' } } },
+					data: {
+						role: hasRoleUsers[s].role.filter(role => role !== roleId)
+					}
+				});
+			}
+		}
 	}
 }
 

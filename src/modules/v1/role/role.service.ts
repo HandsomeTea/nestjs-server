@@ -8,31 +8,39 @@ export class RoleService {
 		@Inject('USER_DAL') private user: UserDal,
 	) { }
 
-	async create(role: { name: string, permission: Record<string, Array<string>>, _id?: string }) {
-		if (!role._id) {
-			return await this.role.create(role);
-		} else {
-			return await this.role.updateOne(role._id, role);
-		}
+	async create(role: { name: string, permission: Record<string, Array<string>> }) {
+		return await this.role.create(role);
+	}
+
+	async update(role: { name: string, permission: Record<string, Array<string>>, _id: string }) {
+		return await this.role.updateOne(role._id, role);
 	}
 
 	async page(option: { keyword?: string, skip?: number, limit?: number }) {
 		return await this.role.paging(option);
 	}
 
-	async findOne(option: { id: string }) {
-		return await this.role.findOne(option);
+	async getPermissions(roleIds: Array<string>) {
+		return (await this.role.findByIds(roleIds)).map(role => role.permission);
 	}
 
-	async find(option: { id?: Array<string> | string, name?: string }) {
-		const roles = await this.role.find(option);
-
-		return roles.map(role => role.permission);
+	async findById(id: string) {
+		return await this.role.findById(id);
 	}
 
-	async delete(id: Array<string>) {
-		await this.role.delete(id);
-		await this.user.removeRoles(id);
-		return;
+	async deleteById(id: Array<string> | string) {
+		if (!id) {
+			return;
+		}
+		await this.role.deleteByIds(id);
+		const roleIds = Array.isArray(id) ? id : [id];
+
+		for (let s = 0; s < roleIds.length; s++) {
+			await this.user.removeRoleById(roleIds[s]);
+		}
+	}
+
+	async getSelectList() {
+		return (await this.role.find({})).map(role => ({ _id: role._id, name: role.name }));
 	}
 }

@@ -53,12 +53,12 @@ export class UserService {
 		return await this.user.paging(option);
 	}
 
-	async findOne(id: string) {
+	async findById(id: string) {
 		return await this.user.findById(id);
 	}
 
 	async update(id: string, updateUser: UpdateUserDto) {
-		const { name, phone, email, password, type, avatar } = updateUser;
+		const { name, phone, email, password, type, role, avatar } = updateUser;
 
 		return await this.user.updateOne(id, {
 			name, phone, email,
@@ -73,12 +73,12 @@ export class UserService {
 					}
 				};
 			})() : {},
-			type, avatar
+			type, role, avatar
 		});
 	}
 
-	async remove(id: Array<string>) {
-		return await this.user.deleteMany(id);
+	async removeById(id: Array<string> | string) {
+		return await this.user.deleteById(id);
 	}
 
 	private async generateLoginResult(userId: string, option?: { token?: string }): Promise<LoginResult> {
@@ -198,5 +198,9 @@ export class UserService {
 		if (type === 'resume') {
 			return this.loginByToken(token);
 		}
+	}
+
+	async logout(userId: string, token: string) {
+		await this.userToken.delete({ userId, hashedToken: sha256(token, 'base64') });
 	}
 }
