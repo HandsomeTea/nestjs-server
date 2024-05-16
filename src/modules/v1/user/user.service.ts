@@ -13,16 +13,7 @@ export class UserService {
 		@Inject('USER_DAL') private user: UserDal,
 		@Inject('USER_TOKEN_DAL') private userToken: UserTokenDal,
 		@Inject('HTTP') private HTTP: ServerRequest
-	) {
-		// this.create({
-		// 	name: 'coco',
-		// 	phone: '13000000000',
-		// 	email: '13000000000@qq.com',
-		// 	password: '123456',
-		// 	type: ['user'],
-		// 	avatar: 'https://www.baidu.com/img/bd_logo1.png'
-		// });
-	}
+	) { }
 
 	async create(user: CreateUserDto) {
 		const { name, phone, email, password, type, avatar, role } = user;

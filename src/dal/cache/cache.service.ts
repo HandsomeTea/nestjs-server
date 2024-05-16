@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import Redis from 'ioredis';
 import { InjectRedis } from '@svtslv/nestjs-ioredis';
+import { CacheServer } from './cache.interfaces';
 
 @Injectable()
-export class CacheService {
+export class CacheService implements CacheServer {
 	// 也可以注入别的缓存服务
 	constructor(@InjectRedis() private server: Redis) { }
 
@@ -19,5 +20,16 @@ export class CacheService {
 		const result = await this.server.get(this.cacheUserKey(userId));
 
 		return JSON.parse(result) as UserModel;
+	}
+
+	async deleteUserById(userId: string | Array<string>): Promise<void> {
+		if (Array.isArray(userId) && userId.length > 0) {
+			for (let s = 0; s < userId.length; s++) {
+				await this.server.del(this.cacheUserKey(userId[s]));
+			}
+		}
+		if (typeof userId === 'string') {
+			await this.server.del(this.cacheUserKey(userId));
+		}
 	}
 }

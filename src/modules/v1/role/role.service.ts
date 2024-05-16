@@ -32,7 +32,7 @@ export class RoleService {
 		if (!id) {
 			return;
 		}
-		await this.role.deleteByIds(id);
+		await this.role.deleteById(id);
 		const roleIds = Array.isArray(id) ? id : [id];
 
 		for (let s = 0; s < roleIds.length; s++) {
