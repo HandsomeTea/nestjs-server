@@ -14,7 +14,7 @@ services:
             - -c
             - |
                 cd /usr/src/app
-                [ ! -d "/usr/src/app/node_modules" ] && npm install
+                [ ! -d "/usr/src/app/node_modules" ] && npm config set strict-ssl false && npm install --omit=dev --registry=https://registry.npm.taobao.org
                 cd /usr/src/app/src/db/prisma/
                 npx prisma generate
                 cd /usr/src/app
