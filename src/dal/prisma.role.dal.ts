@@ -9,9 +9,7 @@
 //     constructor(
 //         @Inject('ROLE_MODEL') private role: Roles,
 //         @Inject('USER_MODEL') private user: Users
-//     ) {
-//         this.init();
-//     }
+//     ) {  }
 
 //     private getModeledData(role?: any): RoleModel {
 //         if (!role) {
@@ -27,7 +25,7 @@
 //         };
 //     }
 
-//     private async init() {
+//     async onApplicationBootstrap(): Promise<void> {
 //         let innerRole = await this.role.findFirst({ where: { type: 'INNER_ADMIN' } });
 
 //         if (!innerRole) {

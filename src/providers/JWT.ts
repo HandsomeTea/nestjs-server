@@ -4,11 +4,9 @@ import { Injectable, Module } from '@nestjs/common';
 
 @Injectable()
 export class JWT {
-	constructor() {
-		this.init();
-	}
+	constructor() { }
 
-	private init() {
+	onApplicationBootstrap() {
 		if (!this.secret) {
 			throw new Exception('JWT secret is required!', ErrorCode.INTERNAL_SERVER_ERROR);
 		}
