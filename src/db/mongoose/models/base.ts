@@ -50,7 +50,7 @@ export default abstract class MongoBase<CM> {
 	}
 
 	async insertMany(data: Array<Omit<CM, '_id' | 'createdAt' | 'updatedAt'>>): Promise<Array<Mongo<CM>>> {
-		return await this.model.insertMany(data, { lean: true }) as unknown as Array<Mongo<CM>>;
+		return await this.model.insertMany(data) as unknown as Array<Mongo<CM>>;
 	}
 
 	async deleteOne(query: FilterQuery<Mongo<CM>>, options?: QueryOptions<Mongo<CM>>): Promise<{ acknowledged: boolean; deletedCount: number }> {

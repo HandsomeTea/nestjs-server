@@ -1,7 +1,7 @@
 /**
  * 1,创建 schema.prisma
- * 2,在根目录创建.env
- * 3,在 schema.prisma文件所在的目录运行 npx prisma generate
+ * 2,在根目录创建.env.local
+ * 3,在schema.prisma文件所在的目录运行 npx prisma generate
  *
  * 其它
  * npx prisma studio，启动prisma数据库可视化工具
