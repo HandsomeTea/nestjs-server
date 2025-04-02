@@ -1,4 +1,43 @@
-# nestjs-server
+# 环境
+- `nodejs` v20.11.1
+- `npm` 10.2.4
+- `typescript`
 
-nodejs: v20.11.1
-npm: 10.2.4
+# 涉及模块
+- 错误码及规范设计。
+- 通用`Exception`类封装。
+- `logger`日志模块封装。
+- `DAL`模块封装。
+  - 实际项目中大多数情况只连接一种数据库。
+  - 如果需要连接多种数据库，可以参考本模块进行扩展。
+- 用户和角色模块封装。
+  - 密码/token登录。
+  - 默认admin用户。
+  - 用户角色权限管理。
+- 数据库`ORM`模块封装。
+  - `redis`模块封装。
+  - `sql`模块(`sequelize`)封装。
+  - `mongo`模块(`mongoose`)封装。
+  - `prisma`模块封装。
+- `nestjs`自定义修饰器实践。
+- 使用`nestjs`过滤器捕获接口Exception。
+- 使用`nestjs`守卫做权限校验。
+- 使用`nestjs`拦截器打印接口response的trace日志。
+- 使用`nestjs`中间件打印接口request的trace日志。
+- 健康检查模块封装。
+- 接口路由规范设计。
+- `graphql`模块封装。
+- `DTO`实践。
+- 外部服务接口请求封装。
+- `JWT`封装。
+- `jest`测试模块封装。
+- git相关
+  - `cz`提交规范封装。
+  - `husky`钩子封装。
+- 其它
+  - 封装`compodoc`快速了解项目代码结构。
+  - `apidoc`接口文档生成。
+  - `eslint 8`代码规范检查。
+  - `prettier`代码格式化。
+  - `docker`和`docker-compose`支持。
+  - `pm2`配置样例。
